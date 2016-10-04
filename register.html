@@ -1,0 +1,178 @@
+<!doctype html>
+<html ng-app="storeApp">
+	<head>
+		<title>Muebles Rústicos San José</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="plugins/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" href="plugins/anima/anima.css">
+		<link rel="stylesheet" href="plugins/owlcarousel/owl.carousel.css">
+		<link rel="stylesheet" href="css/icons.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/sliders.css">
+		<link rel="stylesheet" href="css/hero-slider.css">
+		<link rel="stylesheet" href="css/project-slider.css">
+		<link rel="stylesheet" href="css/app/app.css">
+		<link rel="stylesheet" href="css/angular-ui-notification.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+		<link rel="shortcut icon" href="img/ico/32.png" sizes="32x32" type="image/png"/>
+		<link rel="apple-touch-icon-precomposed" href="img/ico/60.png" type="image/png"/>
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/ico/72.png" type="image/png"/>
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="img/ico/120.png" type="image/png"/>
+		<link rel="apple-touch-icon-precomposed" sizes="152x152" href="img/ico/152.png" type="image/png"/>
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body class="dark">
+		<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/muebleria/www/index.html">
+						<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
+					</a>
+				</div>
+				<div class="collapse navbar-collapse">
+					<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+						<div class="container">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+									<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+								</button>
+								<a class="navbar-brand" href="/muebleria/www/index.html">
+									<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
+								</a>
+							</div>
+							<div class="collapse navbar-collapse">
+								<ul id="navigation" class="nav navbar-nav navbar-right text-center" ng-controller="loginController" ng-init = "init()">
+									<li class="ng-hide user-control" ng-show="admin">
+										<a data-toggle="dropdown">Administrador</a>
+										<ul class="dropdown-menu user-info">
+											<li>
+												<a href="/muebleria/www/product.html">Productos</a>
+											</li>
+											<li>
+												<a href="#">Clientes</a>
+											</li>
+											<li>
+												<a href="#">Usuarios</a>
+											</li>
+										</ul>
+									</li>
+									<li><a href="#products">Productos</a></li>
+									<li><a href="#about">Nosotros</a></li>
+									<li><a href="#orderform">Comprar</a></li>
+									<li><a href="#contact">Contacto</a></li>
+									<li class="dropdown ng-hide" ng-hide="loggedIn">
+										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Iniciar Sesión</button>
+										<ul class="dropdown-menu login-control">
+											<li>
+												<div class="input-group">
+													<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+													<input type="text" autofocus class="form-control" ng-model="user.name" placeholder="Usuario">
+												</div>
+											</li>
+											<li>
+												<div class="input-group">
+													<span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+													<input type="password" ng-focus="loginError" class="form-control" ng-keypress="($event.which === 13) ? login() : 0" ng-model="user.pass" placeholder="Contraseña">
+												</div>
+											</li>
+											<li>
+												<button type="button" class="btn btn-login" ng-click="login()">Iniciar Sesión</button>
+												<button type="button" class="btn btn-register" ng-click="goToRegister()">Registrarse</button>
+											</li>
+										</ul>
+									</li>
+									<li class="dropdown ng-hide user-control" ng-show="loggedIn">
+										<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
+										<ul class="dropdown-menu user-info">
+											<li>
+												<button type="button" class="btn btn-logout" ng-click="logout()">Cerrar Sesión</button>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+        <div class="register-form" ng-controller="registerController">
+            <h2>Registro de usuario</h2>
+            <form class="">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input type="text" autofocus class="form-control" ng-model="user.user_name" placeholder="Nombre de Usuario" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" ng-model="user.name" placeholder="Nombre" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" ng-model="user.last_name" placeholder="Apellidos" required>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                    <input type="email" class="form-control"  ng-model="user.email" required placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
+                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone1" placeholder="Teléfono 1" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
+                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone2" placeholder="Teléfono 2">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="5" placeholder="Dirección" ng-model="user.address"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-create" name="button" ng-click="register()">Registrarse</button>
+                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+		<script type="text/javascript" src="plugins/jquery/jquery-2.2.4.min.js"></script>
+		<script type="text/javascript" src="plugins/waypoints/jquery.waypoints.min.js"></script>
+		<script type="text/javascript" src="plugins/angular/angular.min.js"></script>
+		<script type="text/javascript" src="plugins/bootstrap/bootstrap.min.js"></script>
+		<script type="text/javascript" src="plugins/singlepagenav/jquery.singlePageNav.min.js"></script>
+		<script type="text/javascript" src="plugins/countdown/jquery.countdown.min.js"></script>
+		<script type="text/javascript" src="plugins/owlcarousel/owl.carousel.min.js"></script>
+		<script type="text/javascript" src="plugins/waitforimages/jquery.waitforimages.min.js"></script>
+
+		<script type="text/javascript" src="js/hero-slider.js"></script>
+		<script type="text/javascript" src="js/project-slider.js"></script>
+		<script type="text/javascript" src="js/custom.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
+		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+
+		<!-- Controllers -->
+		<script type="text/javascript" src="js/controllers/login.js"></script>
+        <script type="text/javascript" src="js/controllers/register.js"></script>
+        <!-- Services -->
+		<script type="text/javascript" src="js/services/queryService.js"></script>
+
+        <!-- Directives -->
+        <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
+	</body>
+</html>
