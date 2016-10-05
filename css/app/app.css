@@ -4,6 +4,7 @@ body.dark {
 
 .navbar {
     max-height: 60px;
+    min-height: 60px;
 }
 
 .dropdown.ng-hide {

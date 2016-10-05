@@ -44,7 +44,15 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
         }
 
         $scope.goToRegister = function() {
+            window.location.pathname = config.register;
+        };
+
+        $scope.goToProduct = function() {
+            window.location.pathname = config.product;
+        };
+
+        $scope.goHome = function() {
             window.location.pathname = config.redirect;
-        }
+        };
     }
 ]);
