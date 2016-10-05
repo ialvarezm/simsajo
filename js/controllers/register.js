@@ -10,7 +10,7 @@ app.controller('registerController', ['$scope', 'QueryService', 'Notification',
         };
 
         $scope.cancel = function() {
-            window.location.pathname = "/muebleria/www/index.html";
+            window.location.pathname = config.redirect;
         };
     }
 ]);

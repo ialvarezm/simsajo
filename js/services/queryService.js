@@ -1,5 +1,5 @@
 app.service('QueryService', function ($http) {
-  var host = "http://localhost:8080/muebleria/api/api.php?x=";
+  var host = config.host;
     return{
       post: function(url, params, onSuccess, onFail){
         $http({

@@ -23,8 +23,8 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
                     localStorage.currentUser = JSON.stringify($scope.currentUser);
                     $scope.admin = $scope.currentUser.rol === "1";
 
-                    if(window.location.pathname !== "/muebleria/www/index.html")
-                        window.location.pathname = "/muebleria/www/index.html";
+                    if(window.location.pathname !== config.redirect)
+                        window.location.pathname = config.redirect;
                 } else {
                     $scope.loggedIn = false;
                     $scope.currentUser = {};
@@ -44,7 +44,7 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
         }
 
         $scope.goToRegister = function() {
-            window.location.pathname = "/muebleria/www/register.html";
+            window.location.pathname = config.redirect;
         }
     }
 ]);
