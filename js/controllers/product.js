@@ -1,7 +1,8 @@
-app.controller('productController', ['$scope', 'QueryService', 'Notification', '$timeout',
-    function productController($scope, QueryService, Notification, $timeout) {
+app.controller('productController', ['$scope', 'QueryService', 'Notification', 'ModalService', '$timeout',
+    function productController($scope, QueryService, Notification, ModalService, $timeout) {
         $scope.init = function () {
             $scope.loading = true;
+            $scope.list = true;
             $('.tool').tooltip();
             getProducts();
         };
@@ -12,8 +13,13 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
                 $scope.products = response;
                 $scope.table = true;
                 $scope.loading = false;
-                $timeout(function(){$('.tool').tooltip();}, 200);                
+                $timeout(function(){$('.tool').tooltip();}, 200);
             });
-        }
+        };
+
+        $scope.showForm = function(edit){
+            $scope.list = false;
+        };
+
     }
 ]);
