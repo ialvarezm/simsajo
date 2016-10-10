@@ -111,7 +111,7 @@
 			<div class="panel panel-default" ng-show="list">
 				<div class="panel-heading">
 					Productos
-					<i class="fa fa-plus-square add tool" data-toggle="tooltip" data-placement="top" title="Nuevo Producto " aria-hidden="true"></i>
+					<i class="fa fa-plus-square add tool" data-toggle="tooltip" data-placement="top" title="Nuevo Producto " aria-hidden="true" ng-click="showForm()"></i>
 				</div>
 				<table class="table table-striped">
 					<thead>
@@ -128,7 +128,7 @@
 							<td>{{product.precio|number}}</td>
 							<td>{{product.categoria}}</td>
 							<td class="action">
-								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true)"></i>
+								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, product)"></i>
 								<i class="fa fa-times tool remove action" data-toggle="tooltip" data-placement="right" title="Eliminar" aria-hidden="true"></i>
 							</td>
 						</tr>
@@ -136,41 +136,27 @@
 				</table>
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
 			</div>
-			<div class="productForm" ng-show="!list">
+			<div class="productForm ng-hide" ng-hide="list">
+				<h2>{{title}}</h2>
 				<form class="">
 	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" autofocus class="form-control" ng-model="user.user_name" placeholder="Nombre de Usuario" required>
+	                    <span class="input-group-addon"><i class="fa fa-cube" aria-hidden="true"></i></span>
+	                    <input type="text" autofocus class="form-control" ng-model="product.nombre" placeholder="Nombre del Producto" required>
 	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-	                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
+
+	                <div class="form-group">
+						<label class="control-label">Categoría</label>
+						<select class="form-control" ng-model="product.catId" ng-options="item.id as item.nombre for item in categories"></select>
 	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" class="form-control" ng-model="user.name" placeholder="Nombre" required>
+					<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
+	                    <input type="text" ng-only-numbers class="form-control" ng-model="product.precio" placeholder="Precio" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
 	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" class="form-control" ng-model="user.last_name" placeholder="Apellidos" required>
-	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-	                    <input type="email" class="form-control"  ng-model="user.email" required placeholder="Email">
-	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-	                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone1" placeholder="Teléfono 1" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
-	                </div>
-	                <div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-	                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone2" placeholder="Teléfono 2">
+					<div class="form-group">
+	                    <textarea class="form-control" rows="3" placeholder="Descripción" ng-model="product.descripcion"></textarea>
 	                </div>
 	                <div class="form-group">
-	                    <textarea class="form-control" rows="5" placeholder="Dirección" ng-model="user.address"></textarea>
-	                </div>
-	                <div class="form-group">
-	                    <button type="button" class="btn btn-create" name="button" ng-click="register()">Registrarse</button>
+	                    <button type="button" class="btn btn-save" name="button" ng-click="save()">Guardar</button>
 	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
 	                </div>
 	            </form>
@@ -185,7 +171,6 @@
 		<script type="text/javascript" src="plugins/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="plugins/singlepagenav/jquery.singlePageNav.min.js"></script>
 		<script type="text/javascript" src="plugins/countdown/jquery.countdown.min.js"></script>
-		<script type="text/javascript" src="plugins/angular-modal-service.js"></script>
 		<script type="text/javascript" src="plugins/owlcarousel/owl.carousel.min.js"></script>
 		<script type="text/javascript" src="plugins/waitforimages/jquery.waitforimages.min.js"></script>
 

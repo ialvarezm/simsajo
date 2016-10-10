@@ -36,7 +36,9 @@ body.dark {
 .dropdown-menu.login-control .btn-login,
 .dropdown-menu.user-info .btn-logout,
 .register-form .btn-create,
-.register-form .btn-cancel {
+.register-form .btn-cancel,
+.product-view .btn-cance,
+.product-view .btn-save {
     background-color: #23A657;
     color: #FFF;
 }
@@ -73,21 +75,28 @@ body.dark {
     top: 100px;
 }
 
-.register-form h2 {
+.register-form h2,
+.product-view h2 {
     color: #23A657;
     text-align: center;
     font-weight: bold;
 }
-.register-form .input-group-addon{
+.register-form .input-group-addon,
+.product-view  .input-group-addons {
     background-color: #fff;
     border-color: #fff;
 }
 
-.register-form .input-group, .register-form .form-group{
+.register-form .input-group,
+.register-form .form-group,
+.product-view .input-group,
+.product-view .form-group{
     margin-top: 15px;
 }
 
-.register-form .btn-cancel {
+.register-form .btn-cancel,
+.product-view .btn-cancel
+{
     float: right;
 }
 
@@ -140,5 +149,18 @@ body.dark {
     position: absolute;
     top: 12px;
     right: 10px;
+}
 
+.productForm .control-label {
+    color: #fff;
+    font-size: 15px;
+}
+
+.productForm .form-control {
+    font-size: 15px;
+    height: 44px;
+}
+
+textarea.form-control {
+    height: auto !important;
 }
