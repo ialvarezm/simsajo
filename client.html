@@ -35,7 +35,7 @@
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/muebleria/www/index.html">
+					<a class="navbar-brand" ng-click="goHome()">
 						<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
 					</a>
 				</div>
@@ -46,7 +46,7 @@
 								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 									<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 								</button>
-								<a class="navbar-brand" ng-click="goHome()">
+								<a class="navbar-brand" ng-click="goHome()" href="#">
 									<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
 								</a>
 							</div>
@@ -106,53 +106,76 @@
 
 			</div>
 		</div>
-        <div class="register-form" ng-controller="registerController">
-            <h2>Registro de usuario</h2>
-            <form class="">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" autofocus class="form-control" ng-model="user.user_name" placeholder="Nombre de Usuario" required>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" ng-model="user.name" placeholder="Nombre" required>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" ng-model="user.last_name" placeholder="Apellidos" required>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <input type="email" class="form-control"  ng-model="user.email" required placeholder="Email">
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone1" placeholder="Teléfono 1" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone2" placeholder="Teléfono 2">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" placeholder="Dirección" ng-model="user.address"></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-create" name="button" ng-click="register()">Registrarse</button>
-                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
-                </div>
-            </form>
-        </div>
+
+		<div class="client-view" ng-controller="clientController" ng-init="init()">
+			<div class="panel panel-default" ng-show="list">
+				<div class="panel-heading">
+					Clientes
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Teléfono 1</th>
+						<th>Teléfono 2</th>
+						<th>Dirección</th>
+						<th></th>
+					</thead>
+					<tbody ng-show="table" class="ng-hide">
+						<tr ng-repeat="client in clients">
+							<td>{{client.nombre}} {{client.apellidos}}</td>
+							<td>{{client.email}}</td>
+							<td>{{client.telefono1}}</td>
+							<td>{{client.telefono2}}</td>
+							<td>{{client.direccion | limitTo: 10}} {{client.direccion.length > 10 ? '...': ''}}</td>
+							<td class="action">
+								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, client)"></i>
+								<i class="fa fa-times tool remove action" data-toggle="tooltip" data-placement="right" title="Eliminar" aria-hidden="true" ng-click="remove(client)"></i>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
+			</div>
+			<div class="clientForm ng-hide" ng-hide="list">
+				<h2>{{title}}</h2>
+				<form class="">
+	                <div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+	                    <input type="text" autofocus class="form-control" ng-model="client.nombre" placeholder="Nombre" required>
+	                </div>
+					<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+	                    <input type="text" class="form-control" ng-model="client.apellidos" placeholder="Apellidos" required>
+	                </div>
+					<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
+	                    <input type="email" class="form-control" ng-model="client.email" placeholder="Email" required>
+	                </div>
+					<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+	                    <input type="text" ng-only-numbers class="form-control" ng-model="client.telefono1" placeholder="Teléfono 1" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
+	                </div>
+					<div class="input-group">
+	                    <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+	                    <input type="text" ng-only-numbers class="form-control" ng-model="client.telefono2" placeholder="Teléfono 2" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
+	                </div>
+					<div class="form-group">
+	                    <textarea class="form-control" rows="3" placeholder="Dirección" ng-model="client.direccion"></textarea>
+	                </div>
+	                <div class="form-group">
+	                    <button type="button" class="btn btn-save" name="button" ng-click="save()">Guardar</button>
+	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
+	                </div>
+	            </form>
+			</div>
+		</div>
 
 		<script type="text/javascript" src="config/config.js"></script>
 
 		<script type="text/javascript" src="plugins/jquery/jquery-2.2.4.min.js"></script>
 		<script type="text/javascript" src="plugins/waypoints/jquery.waypoints.min.js"></script>
 		<script type="text/javascript" src="plugins/angular/angular.min.js"></script>
-		<script type="text/javascript" src="plugins/angular-modal-service.js"></script>
 		<script type="text/javascript" src="plugins/bootstrap/bootstrap.min.js"></script>
 		<script type="text/javascript" src="plugins/singlepagenav/jquery.singlePageNav.min.js"></script>
 		<script type="text/javascript" src="plugins/countdown/jquery.countdown.min.js"></script>
@@ -165,15 +188,17 @@
 		<script type="text/javascript" src="js/custom.js"></script>
 		<script type="text/javascript" src="js/app.js"></script>
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
+		<script type="text/javascript" src="js/utils.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+
+		<!-- Directives -->
+        <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
 
 		<!-- Controllers -->
 		<script type="text/javascript" src="js/controllers/login.js"></script>
         <script type="text/javascript" src="js/controllers/register.js"></script>
+		<script type="text/javascript" src="js/controllers/client.js"></script>
         <!-- Services -->
 		<script type="text/javascript" src="js/services/queryService.js"></script>
-
-        <!-- Directives -->
-        <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
 	</body>
 </html>

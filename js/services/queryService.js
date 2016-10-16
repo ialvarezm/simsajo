@@ -23,7 +23,6 @@ app.service('QueryService', function ($http) {
           method: 'GET',
           url: host + url,
           data: params,
-          cache: true,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8'
           }

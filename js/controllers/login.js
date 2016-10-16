@@ -41,6 +41,7 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
             delete localStorage.currentUser;
             $scope.user = {};
             $scope.currentUser = {};
+            window.location.pathname = config.redirect;
         }
 
         $scope.goToRegister = function() {
@@ -49,6 +50,14 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
 
         $scope.goToProduct = function() {
             window.location.pathname = config.product;
+        };
+
+        $scope.goToClient = function() {
+            window.location.pathname = config.client;
+        };
+
+        $scope.goToUser = function() {
+            window.location.pathname = config.user;
         };
 
         $scope.goHome = function() {

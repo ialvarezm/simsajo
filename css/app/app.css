@@ -28,7 +28,23 @@ body.dark {
     border-color: #fff;
 }
 
-.dropdown-toggle:hover, .dropdown-toggle:focus, .dropdown-toggle:active, .open .dropdown-toggle.btn-default, .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover {
+.dropdown-menu.login-control input{
+    color: #3c3c3c;
+}
+
+.dropdown-toggle:hover,
+.dropdown-toggle:focus,
+.dropdown-toggle:active,
+.open .dropdown-toggle.btn-default,
+.btn-default.active.focus,
+.btn-default.active:focus,
+.btn-default.active:hover,
+.btn-default:active.focus,
+.btn-default:active:focus,
+.btn-default:active:hover,
+.open>.dropdown-toggle.btn-default.focus,
+.open>.dropdown-toggle.btn-default:focus,
+.open>.dropdown-toggle.btn-default:hover {
     background-color: #23A657;
     color: #FFF;
 }
@@ -37,8 +53,10 @@ body.dark {
 .dropdown-menu.user-info .btn-logout,
 .register-form .btn-create,
 .register-form .btn-cancel,
-.product-view .btn-cance,
-.product-view .btn-save {
+.product-view .btn-cancel,
+.product-view .btn-save,
+.client-view .btn-cancel,
+.client-view .btn-save  {
     background-color: #23A657;
     color: #FFF;
 }
@@ -68,7 +86,7 @@ body.dark {
     padding: 15px;
 }
 
-.register-form, .product-view {
+.register-form, .product-view, .client-view {
     width: 50%;
     margin: 0 auto;
     position: relative;
@@ -76,13 +94,15 @@ body.dark {
 }
 
 .register-form h2,
-.product-view h2 {
+.product-view h2,
+.client-view h2 {
     color: #23A657;
     text-align: center;
     font-weight: bold;
 }
 .register-form .input-group-addon,
-.product-view  .input-group-addons {
+.product-view  .input-group-addons,
+.client-view  .input-group-addons {
     background-color: #fff;
     border-color: #fff;
 }
@@ -90,12 +110,15 @@ body.dark {
 .register-form .input-group,
 .register-form .form-group,
 .product-view .input-group,
-.product-view .form-group{
+.product-view .form-group,
+.client-view .input-group,
+.client-view .form-group {
     margin-top: 15px;
 }
 
 .register-form .btn-cancel,
-.product-view .btn-cancel
+.product-view .btn-cancel,
+.client-view .btn-cancel
 {
     float: right;
 }
@@ -106,11 +129,11 @@ body.dark {
     text-align: center;
 }
 
-.product-view .panel {
+.panel{
     border-color: #23A657;
 }
 
-.product-view .panel .panel-heading {
+.panel .panel-heading {
     color: #fff;
     background-color: #23A657;
     border-color: #23A657;
@@ -118,49 +141,53 @@ body.dark {
     font-weight: bold;
 }
 
-.product-view .panel .panel-heading .add {
+.panel .panel-heading .add {
     cursor: pointer;
     position: absolute;
     right: 20px;
     top: 15px;
 }
 
-.product-view .panel table{
+.panel table{
     font-size: 15px;
     color: #323A42;
 }
 
-.product-view .panel table .action{
+.panel table .action{
     cursor: pointer;
     font-size: 20px;
 }
 
-.product-view .panel table td.action {
+.panel table td.action {
     width: 75px;
     position: relative;
 }
 
-.product-view .panel table .edit{
+.panel table .edit{
     color: #23A657;
 }
 
-.product-view .panel table .remove{
+.panel table .remove{
     color: #8e1111;
     position: absolute;
     top: 12px;
     right: 10px;
 }
 
-.productForm .control-label {
+.productForm .control-label,
+.clientForm .control-label {
     color: #fff;
     font-size: 15px;
 }
 
-.productForm .form-control {
+.productForm .form-control,
+.clientForm .form-control {
     font-size: 15px;
     height: 44px;
+    color: #3c3c3c;
 }
 
 textarea.form-control {
     height: auto !important;
+    color: #3c3c3c;
 }

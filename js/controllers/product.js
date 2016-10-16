@@ -1,9 +1,21 @@
 app.controller('productController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
         $scope.init = function () {
+            Utils.checkUserRole();
             $('.tool').tooltip();
             getProducts();
             getCategories();
+            // var sched = later.parse.recur().every(10).second(),
+            //     t = later.setInterval(test, sched),
+            //     count = 20;
+            //
+            // function test() {
+            //     console.log(new Date());
+            //     count--;
+            //     if(count <= 0) {
+            //         t.clear();
+            //     }
+            // }
         };
 
         var getProducts = function () {
@@ -46,6 +58,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
             function(response) {
                 $scope.product =  {};
                 $scope.cancel();
+                Notification.success({message: message, delay: 2000, positionX: 'center'});
             });
 
         };
@@ -53,7 +66,16 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         $scope.cancel = function () {
             $scope.list = true;
             getProducts();
-        }
+        };
+
+        $scope.remove = function (product) {
+            if (confirm("Está seguro que desea eliminar " + product.nombre + '?')) {
+                QueryService.post('removeProduct&id=' + product.id, {},
+                function (response) {
+                    getProducts();
+                });
+            }
+        };
 
     }
 ]);
