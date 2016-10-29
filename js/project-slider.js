@@ -27,7 +27,7 @@ $(document).ready(function() {
 						transition = $this.data('transition');
 
 					$this.owlCarousel({
-					   items : 1, 
+					   items : 1,
 						loop: true,
 						autoplayTimeout: autoplay || false,
 						dots: dots || false,
@@ -59,7 +59,7 @@ $(document).ready(function() {
 		$('#project-modal').on('show.bs.modal', function() {
 			$(this).find('#sdbr-title').text(title);
 			$(this).find('#sdbr-price').text(price);
-			$(this).find('#project-content').html(descr).append('<a id="btn-order" class="btn btn-store btn-right"  href="#">Order now</a>');
+			$(this).find('#project-content').html(descr).append('<a id="btn-order" class="btn btn-store btn-right"  href="#">Ordene Ahora</a>');
 			$(this).find('#project-slider').html(slidesHtml);
 			if (elemDataCont.data('oldprice')) {
 				$(this).find('#sdbr-oldprice').show().text(elemDataCont.data('oldprice'))
@@ -90,5 +90,5 @@ $(document).ready(function() {
 		return false;
 	});
 
-});		
+});
 /*-----  End of Project slider  ------*/
