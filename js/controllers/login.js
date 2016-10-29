@@ -15,7 +15,7 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
             var crypt = new Crypt();
             var user = $scope.user.name;
             var pass = crypt.HASH.md5($scope.user.pass).toString();
-            QueryService.get("login&user=" + user + "&pass=" + pass, {},
+            QueryService.get("login&v=user&user=" + user + "&pass=" + pass, {},
             function(response) {
                 if (response.length > 0) {
                     $scope.loggedIn = true;

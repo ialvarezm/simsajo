@@ -21,7 +21,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         var getProducts = function () {
             $scope.list = true;
             $scope.loading = true;
-            QueryService.get('getProducts', {},
+            QueryService.get('getProducts&v=product', {},
             function(response) {
                 $scope.products = response;
                 $scope.table = true;
@@ -31,7 +31,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         };
 
         var getCategories = function () {
-            QueryService.get('getCategories', {},
+            QueryService.get('getCategories&v=product', {},
             function(response) {
                 $scope.categories = response;
             });
@@ -54,7 +54,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
                 url = 'addProduct';
                 message = 'Producto guardado';
             }
-            QueryService.post(url, $scope.product,
+            QueryService.post(url + '&v=product', $scope.product,
             function(response) {
                 $scope.product =  {};
                 $scope.cancel();
@@ -70,7 +70,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
 
         $scope.remove = function (product) {
             if (confirm("Está seguro que desea eliminar " + product.nombre + '?')) {
-                QueryService.post('removeProduct&id=' + product.id, {},
+                QueryService.post('removeProduct&v=product&id=' + product.id, {},
                 function (response) {
                     getProducts();
                 });

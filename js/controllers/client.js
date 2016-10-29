@@ -9,7 +9,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
         var getClients = function () {
             $scope.list = true;
             $scope.loading = true;
-            QueryService.get('getClients', {},
+            QueryService.get('getUsers&v=user&role=2', {},
             function(response) {
                 $scope.clients = response;
                 $scope.table = true;
@@ -29,10 +29,10 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
         $scope.save = function(){
             var url, message;
             if($scope.edit) {
-                url = 'updateClient';
+                url = 'updateClient&v=user';
                 message = 'Cliente actualizado';
             }else {
-                url = 'addClient';
+                url = 'addClient&v=user';
                 message = 'Cliente guardado';
             }
             QueryService.post(url, $scope.client,
@@ -51,7 +51,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
 
         $scope.remove = function (client) {
             if (confirm("Está seguro que desea eliminar a " + client.nombre + ' ' + client.apellidos + '?')) {
-                QueryService.post('removeClient&id=' + client.id, {},
+                QueryService.post('removeUser&v=user&id=' + client.id, {},
                 function (response) {
                     getClients();
                 });

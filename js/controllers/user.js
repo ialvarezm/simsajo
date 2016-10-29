@@ -9,7 +9,7 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
         var getUsers = function () {
             $scope.list = true;
             $scope.loading = true;
-            QueryService.get('getUsers', {},
+            QueryService.get('getUsers&v=user&role=1', {},
             function(response) {
                 $scope.users = response;
                 $scope.table = true;
@@ -29,10 +29,10 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
         $scope.save = function(){
             var url, message;
             if($scope.edit) {
-                url = 'updateUser';
+                url = 'updateUser&v=user';
                 message = 'Usuario actualizado';
             }else {
-                url = 'addAdmin';
+                url = 'addAdmin&v=user&rol=1';
                 message = 'Usuario guardado';
             }
             QueryService.post(url, $scope.user,
@@ -51,7 +51,7 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
 
         $scope.remove = function (user) {
             if (confirm("Está seguro que desea eliminar a " + user.nombre_usuario + '?')) {
-                QueryService.post('removeClient&id=' + user.id, {},
+                QueryService.post('removeUser&v=user&id=' + user.id, {},
                 function (response) {
                     getUsers();
                 });
