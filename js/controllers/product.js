@@ -1,9 +1,10 @@
 app.controller('productController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
-        $scope.init = function () {
+        $scope.init = function (slider) {
             Utils.checkUserRole();
             $('.tool').tooltip();
-            getProducts();
+            $scope.button = 'Ver más';
+            $scope.getProducts(slider);
             getCategories();
             // var sched = later.parse.recur().every(10).second(),
             //     t = later.setInterval(test, sched),
@@ -18,12 +19,32 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
             // }
         };
 
-        var getProducts = function () {
+        function random(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;;
+        }
+
+        function assignImages(products) {
+            products.forEach(function(item){
+                item['image'] = 'img/product' + random(1,3) + '.jpg';
+                item['imageArray'] = 'img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg';
+            });
+            return products;
+        }
+
+        $scope.getProducts = function (slider) {
             $scope.list = true;
             $scope.loading = true;
             QueryService.get('getProducts&v=product', {},
             function(response) {
-                $scope.products = response;
+                $scope.products = assignImages(response);
+                if(slider) {
+                    setTimeout(function () {
+                        bindPreview();
+                    }, 500);
+                }
+
                 $scope.table = true;
                 $scope.loading = false;
                 $timeout(function(){$('.tool').tooltip();}, 200);
@@ -65,17 +86,25 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
 
         $scope.cancel = function () {
             $scope.list = true;
-            getProducts();
+            $scope.getProducts();
         };
 
         $scope.remove = function (product) {
             if (confirm("Está seguro que desea eliminar " + product.nombre + '?')) {
                 QueryService.post('removeProduct&v=product&id=' + product.id, {},
                 function (response) {
-                    getProducts();
+                    $scope.getProducts();
                 });
             }
         };
+
+        $scope.showHideproducts = function () {
+            if($scope.button === 'Ver más') $scope.button = 'Ver menos';
+            else {
+                $scope.button = 'Ver más';
+                $('#productos').click();
+            }
+        }
 
     }
 ]);

@@ -125,7 +125,7 @@
 						<tr ng-repeat="product in products">
 							<td>{{product.nombre}}</td>
 							<td>{{product.descripcion | limitTo: 25}} {{product.descripcion.length > 25 ? '...' : ''}}</td>
-							<td>₡{{product.precio|number}}</td>
+							<td>${{product.precio|number}}</td>
 							<td>{{product.categoria}}</td>
 							<td class="action">
 								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, product)"></i>

@@ -191,3 +191,64 @@ textarea.form-control {
     height: auto !important;
     color: #3c3c3c;
 }
+
+#projects-container {
+    -webkit-transition: height 1s ease;
+    -moz-transition: height 1s ease;
+    -ms-transition: height 1s ease;
+    -o-transition: height 1s ease;
+    transition: height 1s ease;
+}
+
+#projects-container.small {
+    height: 290px;
+    overflow: hidden;
+}
+
+#projects-container.large {
+    height: 900px;
+}
+
+#overlay {
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1500;
+}
+
+#overlay img{
+    height: 115px;
+    width: 120px;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+}
+
+#overlay p {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 28%;
+}
+
+#navigation {
+    top: 0;
+    position: absolute;
+    right: 30px;
+}
+
+.user-info button{
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.user-info button.logout {
+    background-color: #ad3b3b !important;
+}

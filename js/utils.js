@@ -6,14 +6,14 @@
 var Utils = (function (){
 
     function checkUserRole() {
-        if(localStorage.currentUser){
-            var user = JSON.parse(localStorage.currentUser);
-            if(user.rol !== '1') {
-                window.location.pathname = config.redirect;
-            }
-        } else {
-            window.location.pathname = config.redirect;
-        }
+        // if(localStorage.currentUser){
+        //     var user = JSON.parse(localStorage.currentUser);
+        //     if(user.rol !== '1') {
+        //         window.location.pathname = config.redirect;
+        //     }
+        // } else {
+        //     window.location.pathname = config.redirect;
+        // }
     }
 
     return {

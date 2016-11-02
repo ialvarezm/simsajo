@@ -1,10 +1,10 @@
 $(document).ready(function() {
-	
+
 	/* waypoint ======================================= */
 
    var waypoints = $('.anima').waypoint(function(direction) {
         if(direction == 'down'){
-                $(this.element).addClass('in');    
+                $(this.element).addClass('in');
            } else {
              //  $(this.element).removeClass('animate');
            }
@@ -19,7 +19,7 @@ $(document).ready(function() {
 	// 	play: 4000,
 	// 	animation: 'fade'
 	// });
-		// full-height 
+		// full-height
 	function heroHeight() {
 		var $this = $('#hero'),
 		win = $(window),
@@ -35,7 +35,7 @@ $(document).ready(function() {
 			});
 		}
 	};
-	// Start 
+	// Start
 	heroHeight();
 	$(window).resize(heroHeight);
 
@@ -55,7 +55,7 @@ $(document).ready(function() {
 
 	/* testimonial ======================================= */
 	$('.carousel').carousel();
-	
+
 	/* One Page Navigation Setup ======================================= */
 	$('#main-nav').singlePageNav({
 		offset: $('.navbar').height(),
@@ -65,8 +65,8 @@ $(document).ready(function() {
 		beforeStart: function() {},
 		onComplete: function() {}
 	});
-	
-	/* Bootstrap Affix ======================================= */		
+
+	/* Bootstrap Affix ======================================= */
 	$('#modal-bar').affix({
 		offset: {
 			top: 10,
@@ -74,18 +74,18 @@ $(document).ready(function() {
 	});
 
 
-	/* countdown ======================================= */	
+	/* countdown ======================================= */
 	var days = 3;
 	var date = new Date();
 	var res = date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-	
+
 	$('#countdown').countdown(res, function(event) {
 	  $(this).text(
 		event.strftime('%-d days %H:%M:%S')
 	  );
 	});
 
-	/* Smooth Hash Link Scroll ======================================= */	
+	/* Smooth Hash Link Scroll ======================================= */
 	$('.smooth-scroll').click(function() {
 		if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 			var target = $(this.hash);
@@ -99,7 +99,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-		
+
 
 
 
@@ -116,8 +116,8 @@ $(document).ready(function() {
 		$('#logo').attr('src', 'img/logo-' + m.attr('id') + '.png');
 		$('#navlogo').attr('src', 'img/navlogo-' + m.attr('id') + '.png');
 		$('#style-switcher').removeClass('open');
-		return false; 
-	});	
+		return false;
+	});
 
 
 });

@@ -2,12 +2,12 @@
 =            Project slider            =
 ===================================*/
 
-$(document).ready(function() {
+function bindPreview() {
 
 	var win = $(window),
 		pxContainer = $('#project-slider');
 		loaderIntro = '<div class="landing"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>';
-
+	$('#projects-container, #actions').removeClass('hide');
 	/* Initialize Intro */
 	function initSlider() {
 		var $this = pxContainer;
@@ -90,5 +90,5 @@ $(document).ready(function() {
 		return false;
 	});
 
-});
+}
 /*-----  End of Project slider  ------*/
