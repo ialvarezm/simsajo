@@ -1,7 +1,7 @@
 app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function orderController($scope, QueryService, Notification, $timeout) {
         $scope.init = function () {
-            $scope.range = Array.apply(null, Array(3)).map(function (_, i) {return i+1;});
+            $scope.range = Array.apply(null, Array(5)).map(function (_, i) {return i+1;});
             $scope.getProducts();
         };
 
@@ -44,18 +44,20 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                 });
                 var data = {'order': order, 'order_details': order_details};
                 if(order_details.length > 0) {
-                    QueryService.post('saveOrder&v=order', data,
-                    function(response) {
-                        Notification.success({message: 'El pedido se realizó exitosamente, recibirá un email de confirmación.', delay: 4000, positionX: 'center'});
-                        $scope.products.forEach(function(item){
-                            if(item.total) {
-                                delete item.total;
-                                delete item.cantidad;
-                            }
-                            $scope.total = '';
+                    if(confirm("¿Está seguro(a) que desea realizar la orden?")){
+                        QueryService.post('saveOrder&v=order', data,
+                        function(response) {
+                            Notification.success({message: 'El pedido se realizó exitosamente, recibirá un email de confirmación.', delay: 4000, positionX: 'center'});
+                            $scope.products.forEach(function(item){
+                                if(item.total) {
+                                    delete item.total;
+                                    delete item.cantidad;
+                                }
+                                $scope.total = '';
+                            });
+                            $('#overlay').hide();
                         });
-                        $('#overlay').hide();
-                    });
+                    }
                 } else  {
                     $('#overlay').hide();
                     Notification.error({message: "Por favor agregue algún producto a la orden.", delay: 2000, positionX: 'center'});
