@@ -56,7 +56,10 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                         });
                         $('#overlay').hide();
                     });
-                } else  Notification.error({message: "Por favor agregue algún producto a la orden.", delay: 2000, positionX: 'center'});
+                } else  {
+                    $('#overlay').hide();
+                    Notification.error({message: "Por favor agregue algún producto a la orden.", delay: 2000, positionX: 'center'});
+                }
             } else {
                 Notification.error({message: "Debe iniciar sesión o registrarse para realizar la orden.", delay: 2000, positionX: 'center'});
             }
