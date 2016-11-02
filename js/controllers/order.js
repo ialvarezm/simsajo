@@ -57,6 +57,8 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                             });
                             $('#overlay').hide();
                         });
+                    } else {
+                        $('#overlay').hide();
                     }
                 } else  {
                     $('#overlay').hide();
