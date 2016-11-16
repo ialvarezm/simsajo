@@ -124,78 +124,70 @@
 			</div>
 		</div>
 
-		<div class="client-view" ng-controller="clientController" ng-init="init()">
-			<div class="panel panel-default" ng-show="list">
+		<div class="product-view" ng-controller="orderController" ng-init="initOrders()" style="margin-bottom: 120px;">
+			<div class="panel panel-default">
 				<div class="panel-heading">
-					Clientes
+					Mis Órdenes
 				</div>
-				<table class="table table-striped">
+				<table class="table">
 					<thead>
-						<th>Nombre</th>
-						<th>Email</th>
-						<th>Teléfono 1</th>
-						<th>Teléfono 2</th>
-						<th>Dirección</th>
+						<th>Número de orden</th>
+						<th>Fecha</th>
+						<th>Total</th>
+						<th>Status</th>
 						<th></th>
 					</thead>
-					<tbody ng-show="table" class="">
-						<tr ng-repeat="client in clients" class="hide">
-							<td>{{client.nombre}} {{client.apellidos}}</td>
-							<td>{{client.email}}</td>
-							<td>{{client.telefono1}}</td>
-							<td>{{client.telefono2}}</td>
-							<td>{{client.direccion | limitTo: 10}} {{client.direccion.length > 10 ? '...': ''}}</td>
-							<td class="action">
-								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, client)"></i>
-								<i class="fa fa-times tool remove action" data-toggle="tooltip" data-placement="right" title="Eliminar" aria-hidden="true" ng-click="remove(client)"></i>
+					<tbody class="hide">
+						<tr ng-repeat-start="order in orders" class="hide order-row">
+							<td>{{order.numero}}</td>
+							<td>{{order.fechaObj | date : "dd/MM/yyyy - h:mm a"}}</td>
+							<td>{{order.total | currency:"$":0}}</td>
+							<td ng-class="{delivered: order.status == 'Entregado',
+										   pending: order.status == 'No Entregado',
+									       confirmed: order.status == 'Pago Confirmado',
+									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
+							<td class="action order">
+								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = true;"></i>
+								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
+								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Pago Confirmado', order)"></i>
+								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
+							</td>
+						</tr>
+						<tr ng-repeat-end="" class="detail-row closed" ng-if="order.shown">
+							<td colspan="5">
+								<span><b>Costo del envío:</b> {{order.shipping | currency:"$":0}}</span>
+								<table>
+									<thead>
+										<th>Producto</th>
+										<th>Cantidad</th>
+										<th>Precio por unidad</th>
+										<th>Total</th>
+									</thead>
+									<tbody>
+										<tr ng-repeat="detail in order.details">
+											<td>{{detail.nombre}}</td>
+											<td>{{detail.cantidad}}</td>
+											<td>{{detail.precio | currency:"$":0}}</td>
+											<td>{{detail.monto | currency:"$":0}}</td>
+										</tr>
+									</tbody>
+								</table>
+								<span><b>Monto total de la orden:</b> {{order.total | currency:"$":0}}</span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<div class="pagination hide">
+					<div class="" style="width: 100%">
+						<div class="prev" style="width: 50%; float: left;" title="Página Anterior" ng-disabled="startIndex == 0">
+							<i class="fa fa-chevron-circle-left" ng-click="prev()"></i>
+						</div>
+						<div class="next" style="width: 50%; float: left;" ng-disabled="startIndex > 8" title="Página Siguiente">
+							<i class="fa fa-chevron-circle-right" ng-click="next()"></i>
+						</div>
+					</div>
+				</div>
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
-			</div>
-			<div class="clientForm hide" ng-hide="list">
-				<h2>{{title}}</h2>
-				<form name="clientForm" ng-submit="save()">
-	                <div class="input-group" ng-class="{ 'has-error' : clientForm.name.$invalid && !clientForm.name.$pristine }">
-	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input name="name" type="text" autofocus class="form-control" ng-model="client.nombre" placeholder="Nombre" required>
-	                </div>
-					<p ng-show="clientForm.name.$invalid && !clientForm.name.$pristine" class="help-block hide">El nombre es requerido.</p>
-
-					<div class="input-group" ng-class="{ 'has-error' : clientForm.lastname.$invalid && !clientForm.lastname.$pristine }">
-	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" name="lastname" class="form-control" ng-model="client.apellidos" placeholder="Apellidos" required>
-	                </div>
-					<p ng-show="clientForm.lastname.$invalid && !clientForm.lastname.$pristine" class="help-block hide">Los apellidos son requeridos.</p>
-
-					<div class="input-group" ng-class="{ 'has-error' : clientForm.email.$invalid && !clientForm.email.$pristine }">
-	                    <span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-	                    <input type="email" name="email" class="form-control" ng-model="client.email" placeholder="Email" required>
-	                </div>
-					<p ng-show="clientForm.email.$invalid && !clientForm.email.$pristine" class="help-block hide">Ingrese un email válido.</p>
-
-					<div class="input-group" ng-class="{ 'has-error' : clientForm.phone1.$invalid && !clientForm.phone1.$pristine }">
-	                    <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-	                    <input type="text" name="phone1" ng-only-numbers class="form-control" ng-model="client.telefono1" placeholder="Teléfono 1" required>
-	                </div>
-					<p ng-show="clientForm.phone1.$invalid && !clientForm.phone1.$pristine" class="help-block hide">El teléfono es requerido.</p>
-
-					<div class="input-group">
-	                    <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-	                    <input type="text" ng-only-numbers class="form-control" ng-model="client.telefono2" placeholder="Teléfono 2 (Opcional)">
-	                </div>
-
-					<div class="form-group" ng-class="{ 'has-error' : clientForm.address.$invalid && !clientForm.address.$pristine }">
-	                    <textarea class="form-control" name="address" rows="3" placeholder="Dirección" ng-model="client.direccion" required></textarea>
-	                </div>
-					<p ng-show="clientForm.address.$invalid && !clientForm.address.$pristine" class="help-block hide">La dirección es requerida.</p>
-
-	                <div class="form-group">
-	                    <button type="submit" class="btn btn-save" name="button" ng-disabled="clientForm.$invalid">Guardar</button>
-	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
-	                </div>
-	            </form>
 			</div>
 		</div>
 
@@ -218,6 +210,7 @@
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
 
 		<!-- Directives -->
         <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
@@ -225,7 +218,7 @@
 		<!-- Controllers -->
 		<script type="text/javascript" src="js/controllers/login.js"></script>
         <script type="text/javascript" src="js/controllers/register.js"></script>
-		<script type="text/javascript" src="js/controllers/client.js"></script>
+		<script type="text/javascript" src="js/controllers/order.js"></script>
         <!-- Services -->
 		<script type="text/javascript" src="js/services/queryService.js"></script>
 	</body>

@@ -1,5 +1,5 @@
 body.dark {
-    background-color: #323A42;
+    background-color: #d0d0d0;
 }
 
 .navbar {
@@ -15,20 +15,22 @@ body.dark {
     width: 350px;
 }
 
-.dropdown-menu.login-control .fa {
+#loginPopUp .login-control .fa {
     color: #23A657;
 }
 
-.dropdown-menu.login-control li {
+#loginPopUp .login-control li {
     padding: 15px;
 }
 
-.dropdown-menu.login-control .input-group-addon {
+#loginPopUp .login-control .input-group-addon {
     background-color: #fff;
-    border-color: #fff;
+    background-color: #fff;
+    border: 2px solid #b7b7b7;
+    border-right: none;
 }
 
-.dropdown-menu.login-control input{
+#loginPopUp .login-control input{
     color: #3c3c3c;
 }
 
@@ -47,9 +49,10 @@ body.dark {
 .open>.dropdown-toggle.btn-default:hover {
     background-color: #23A657;
     color: #FFF;
+    box-shadow: none;
 }
 
-.dropdown-menu.login-control .btn-login,
+#loginPopUp .login-control .btn-login,
 .dropdown-menu.user-info .btn-logout,
 .register-form .btn-create,
 .register-form .btn-cancel,
@@ -61,8 +64,8 @@ body.dark {
     color: #FFF;
 }
 
-.dropdown-menu.login-control .btn-register {
-    background-color: #323A42;
+#loginPopUp .login-control .btn-register {
+    background-color: #1360ad;
     color: #FFF;
     float: right;
 }
@@ -87,7 +90,7 @@ body.dark {
 }
 
 .register-form, .product-view, .client-view {
-    width: 50%;
+    width: 90%;
     margin: 0 auto;
     position: relative;
     top: 100px;
@@ -101,10 +104,16 @@ body.dark {
     font-weight: bold;
 }
 .register-form .input-group-addon,
-.product-view  .input-group-addons,
-.client-view  .input-group-addons {
+.product-view  .input-group-addon,
+.client-view  .input-group-addon {
     background-color: #fff;
-    border-color: #fff;
+    border: 2px solid #b7b7b7;
+    border-right: none;
+}
+
+textarea,
+.form-group select {
+    border: 2px solid #b7b7b7 !important;
 }
 
 .register-form .input-group,
@@ -121,6 +130,29 @@ body.dark {
 .client-view .btn-cancel
 {
     float: right;
+}
+.register-form {
+    margin-bottom: 100px;
+    padding-bottom: 20px;
+}
+
+.register-form .checkbox label{
+    font-size: 17px;
+    color: #4a4141;
+    padding: 0;
+    margin-left: -10px;
+}
+
+.register-form .checkbox a{
+    color: #4a4141;
+}
+
+.register-form .checkbox a:hover{
+    color: #23A657;
+}
+
+.user-control {
+    max-width: 150px;
 }
 
 .loading {
@@ -163,7 +195,8 @@ body.dark {
     position: relative;
 }
 
-.panel table .edit{
+.panel table .edit,
+.panel table .detail{
     color: #23A657;
 }
 
@@ -209,7 +242,7 @@ textarea.form-control {
     height: 900px;
 }
 
-#overlay {
+#overlay, #overlay-msg {
     position: fixed;
     padding: 0;
     margin: 0;
@@ -222,7 +255,8 @@ textarea.form-control {
     z-index: 1500;
 }
 
-#overlay img{
+#overlay img,
+#overlay-msg img{
     height: 115px;
     width: 120px;
     position: absolute;
@@ -230,7 +264,8 @@ textarea.form-control {
     left: 45%;
 }
 
-#overlay p {
+#overlay p,
+#overlay-msg p{
     color: white;
     font-size: 25px;
     font-weight: bold;
@@ -251,4 +286,143 @@ textarea.form-control {
 
 .user-info button.logout {
     background-color: #ad3b3b !important;
+}
+
+input.ng-dirty.ng-invalid-required,
+input.ng-dirty.ng-invalid-required:focus {
+    border-color: #a94442;
+}
+
+.help-block {
+    color: #a94442;
+}
+
+@media (max-width: 950px) {
+    #navigation {
+        position: relative;
+    }
+    .navbar-collapse,
+    .navbar-inverse .navbar-nav > .open > a,
+    .navbar-inverse .navbar-nav > .open > a:hover {
+        background-color: #333;
+        border: none;
+    }
+    .user-control {
+        max-width: initial;
+        width: 250px;
+        margin: 0 auto;
+    }
+    .user-control.dropdown {
+        padding: 0;
+    }
+    .dropdown-menu.user-info.admin {
+        position: absolute;
+        bottom: auto;
+        right: 0;
+    }
+
+    .dropdown-menu.user-info {
+        margin-left: 60px;
+    }
+
+    .navbar-fixed-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
+        max-height: inherit;
+    }
+}
+.dropdown-menu.user-info a {
+    text-align: center;
+}
+
+#loginPopUp .modal-content {
+    background-color: #333;
+}
+
+#loginPopUp .modal-header {
+    border: none;
+    background-color: #23A657;
+}
+
+#loginPopUp .modal-header .close{
+    color: white;
+    text-shadow: none;
+    opacity: 1;
+    font-size: 50px;
+}
+
+#loginPopUp .modal-body {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#loginPopUp .modal-title {
+    color: white;
+    text-align: center;
+}
+
+
+#loginPopUp .login-row {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+table .pending {
+    background-color: #f9efa8;
+}
+
+table .confirmed {
+    background-color: #a8c5f9;
+}
+
+table .delivered {
+    background-color: #c3f9a8;
+}
+
+table .cancelled {
+    background-color: #f9a8a8;
+}
+
+.detail-row table {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.order-row td.action.order{
+    width: 100px;
+}
+
+.order-row td.action.order i {
+    margin-left: 5px;
+}
+
+.order-row td.action.order i.fa-ban {
+    color: #8e1111 !important;
+}
+
+.order-row td.action.order i.fa-money {
+    color: #2e58a7 !important;
+}
+
+.detail-row{
+    background-color: #f1f1f1;
+}
+
+.detail-row table th{
+    color: #23A657;
+}
+
+.pagination {
+    font-size: 30px;
+    color: #23A657;
+    position: absolute;
+    right: 20px;
+    width: 100px;
+}
+
+.pagination [disabled=disabled] i {
+    opacity: 0.5;
+}
+
+.pagination i {
+    cursor: pointer;
 }

@@ -28,7 +28,7 @@
 		<![endif]-->
 	</head>
 
-	<body class="dark">
+	<body class="dark" ng-controller="loginController" ng-init = "init()">
 		<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -40,7 +40,7 @@
 					</a>
 				</div>
 				<div class="collapse navbar-collapse">
-					<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="loginController" ng-init = "init()">
+					<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 						<div class="container">
 							<div class="navbar-header">
 								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -65,34 +65,33 @@
 											<li>
 												<a ng-click="goToUser()">Usuarios</a>
 											</li>
+											<li>
+												<a ng-click="goOrdersAdmin()">Órdenes Pendientes</a>
+											</li>
+										</ul>
+									</li>
+									<li class="ng-hide user-control" ng-show="admin">
+										<a data-toggle="dropdown">Reportes</a>
+										<ul class="dropdown-menu user-info admin">
+											<li>
+												<a ng-click="goToProduct()">Productos más vendidos</a>
+											</li>
+											<li>
+												<a ng-click="goToClient()">Clientes</a>
+											</li>
 										</ul>
 									</li>
 									<li class="dropdown ng-hide" ng-hide="loggedIn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Iniciar Sesión</button>
-										<ul class="dropdown-menu login-control">
-											<li>
-												<div class="input-group">
-													<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-													<input type="text" autofocus class="form-control" ng-model="user.name" placeholder="Usuario">
-												</div>
-											</li>
-											<li>
-												<div class="input-group">
-													<span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-													<input type="password" ng-focus="loginError" class="form-control" ng-keypress="($event.which === 13) ? login() : 0" ng-model="user.pass" placeholder="Contraseña">
-												</div>
-											</li>
-											<li>
-												<button type="button" class="btn btn-login" ng-click="login()">Iniciar Sesión</button>
-												<button type="button" class="btn btn-register" ng-click="goToRegister()">Registrarse</button>
-											</li>
-										</ul>
+										<button type="button" class="btn btn-default dropdown-toggle" ng-click="openLoginModal()">Iniciar Sesión</button>
 									</li>
 									<li class="dropdown ng-hide user-control" ng-show="loggedIn">
 										<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
 										<ul class="dropdown-menu user-info">
 											<li>
-												<button type="button" class="btn btn-logout" ng-click="logout()">Cerrar Sesión</button>
+												<button type="button" class="btn btn-logout" ng-click="">Mis órdenes</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
 											</li>
 										</ul>
 									</li>
@@ -106,63 +105,176 @@
 
 			</div>
 		</div>
-        <div class="register-form" ng-controller="registerController">
+        <div class="register-form" ng-controller="registerController" ng-init="init()">
             <h2>Registro de usuario</h2>
-            <form class="">
-                <div class="input-group">
+            <form name="registerForm" ng-submit="register()" novalidate>
+
+				<!-- Nombre de Usuario -->
+				<div class="input-group" ng-class="{ 'has-error' : registerForm.username.$invalid && !registerForm.username.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" autofocus class="form-control" ng-model="user.user_name" placeholder="Nombre de Usuario" required>
+                    <input autofocus type="text" class="form-control" name="username" ng-model="user.user_name" placeholder="Nombre de Usuario" required>
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.username.$invalid && !registerForm.username.$pristine" class="help-block hide">El nombre de usuario es requerido.</p>
+
+				<!-- Contraseña -->
+				<div class="input-group" ng-class="{ 'has-error' : registerForm.pass.$invalid && !registerForm.pass.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
+                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required name="pass">
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.pass.$invalid && !registerForm.pass.$pristine && !registerForm.pass.$error.minlength && !registerForm.pass.$error.maxlength" class="help-block hide">La contraseña es requerida.</p>
+
+				<!-- Nombre -->
+				<div class="input-group" ng-class="{ 'has-error' : registerForm.name.$invalid && !registerForm.name.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" ng-model="user.name" placeholder="Nombre" required>
+                    <input type="text" class="form-control" ng-model="user.name" name="name" placeholder="Nombre" required>
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.name.$invalid && !registerForm.name.$pristine" class="help-block hide">El nombre es requerido.</p>
+
+				<!-- Apellidos -->
+                <div class="input-group" ng-class="{ 'has-error' : registerForm.lastname.$invalid && !registerForm.lastname.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-                    <input type="text" class="form-control" ng-model="user.last_name" placeholder="Apellidos" required>
+                    <input type="text" class="form-control" ng-model="user.last_name" name="lastname" placeholder="Apellidos" required>
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.lastname.$invalid && !registerForm.lastname.$pristine" class="help-block hide">Los apellidos son requeridos.</p>
+
+				<!-- Email -->
+                <div class="input-group" ng-class="{ 'has-error' : registerForm.email.$invalid && !registerForm.email.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-                    <input type="email" class="form-control"  ng-model="user.email" required placeholder="Email">
+                    <input type="email" name="email" class="form-control"  ng-model="user.email" required placeholder="Email">
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="help-block hide">Ingrese un email válido.</p>
+
+				<!-- Teléfono -->
+                <div class="input-group" ng-class="{ 'has-error' : registerForm.phone1.$invalid && !registerForm.phone1.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone1" placeholder="Teléfono 1" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
+                    <input type="text" ng-only-numbers class="form-control" name="phone1" ng-model="user.phone1" placeholder="Teléfono 1" ng-maxlength="8" required>
                 </div>
-                <div class="input-group">
+				<p ng-show="registerForm.phone1.$invalid && !registerForm.phone1.$pristine && !registerForm.phone1.$error.maxlength" class="help-block hide">El teléfono es requerido.</p>
+				<p ng-show="registerForm.phone1.$error.maxlength" class="help-block hide">El teléfono debe tener un máximo de 8 dígitos.</p>
+
+				<!-- Teléfono -->
+                <div class="input-group" ng-class="{ 'has-error' : registerForm.phone2.$invalid && !registerForm.phone2.$pristine }">
                     <span class="input-group-addon"><i class="fa fa-volume-control-phone" aria-hidden="true"></i></span>
-                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone2" placeholder="Teléfono 2">
+                    <input type="text" ng-only-numbers class="form-control" ng-model="user.phone2" placeholder="Teléfono 2 (Opcional)" ng-maxlength="8" name="phone2">
                 </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" placeholder="Dirección" ng-model="user.address"></textarea>
+				<p ng-show="registerForm.phone2.$error.maxlength" class="help-block hide">El teléfono debe tener un máximo de 8 dígitos.</p>
+
+				<!-- Área Metropolitana -->
+				<div class="checkbox">
+					<label><input ng-model="user.gam" type="checkbox" value="">Dentro del Gran Área Metropolitana <a href="#" data-toggle="modal" data-target=".text-modal" ng-click="scrollBottom()">(Consultar lista)</a></label>
+				</div>
+
+				<!-- Dirección -->
+                <div class="form-group" ng-class="{ 'has-error' : registerForm.address.$invalid && !registerForm.address.$pristine }">
+                    <textarea class="form-control" name="address" rows="5" placeholder="Dirección" ng-model="user.address" required></textarea>
                 </div>
+				<p ng-show="registerForm.address.$invalid && !registerForm.address.$pristine" class="help-block hide">La dirección es requerida.</p>
+
+				<!-- Botones -->
                 <div class="form-group">
-                    <button type="button" class="btn btn-create" name="button" ng-click="register()">Registrarse</button>
+                    <button type="submit" class="btn btn-create" name="button" ng-disabled="registerForm.$invalid">Registrarse</button>
                     <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
                 </div>
             </form>
         </div>
 
+		<footer id="main-footer" class="dark-bg light-typo">
+			<div class="container">
+				<p class="pull-left copyright"> Muebles Rústicos San José. <br> <br>
+				</p>
+
+				<div class="pull-right paymentMethodImg copyright">
+					<a class="btn btn-store outline" href="#" data-toggle="modal" data-target=".text-modal">Términos y Condiciones</a>
+				</div>
+			</div>
+		</footer>
+
+		<div class="modal fade text-modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="color-bg">
+						<div class="container">
+							<div class="row ">
+								<div class="col-xs-12 col-sm-12 col-md-12 color-bg light-typo" id="9modal-bar">
+									<h2 class="pull-left">TÉRMINOS Y CONDICIONES</h2>
+									<a class="close pull-right" href="#" data-dismiss="modal" ><i class="icon-close"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container">
+						<div class="row ">
+							<div class="col-xs-12 col-sm-6 col-md-6" >
+								<h3>Política de precios</h3>
+								<p>Los precios de los productos se muestran en dólares e incluyen el impuesto de venta del 13%. No incluyen los cargos por envío fuera del Gran Área Metropolitana.
+								Muebles Rústicos San José tiene derecho de cambiar los precios sin previo aviso. Los precios serán válidos durante el proceso de la orden.</p>
+								<h3>Pagos</h3>
+								<p>Las órdenes realizadas en el carrito de compras, se deben cancelar mediante un depósito a la cuenta de la empresa.
+								Luego de realizar el depósito, debe enviar el comprobante vía correo electrónico, luego de esto se procederá con la entrega del mismo.</p>
+								<h3>Confirmación de la orden</h3>
+								<p>El usuario será notificado vía e-mail después de hacer su orden y confirmar el pago.</p>
+								<h3>Envío</h3>
+								<p>El envío será gratis dentro del GAM, en caso ser fuera del GAM, el cliente será contactado para verificar su dirección, informar el costo del mismo y coordinar la entrega.</p>
+								<h3>Conformación del Gran Área Metropolitana</h3>
+								<p><b>San José:</b> San José, Escazú, Desamparados, Aserrí, Mora, Goicoechea, Santa Ana, Alajuelita, Vázquez de Coronado, Tibás, Moravia, Montes de Oca, Curridabat</p>
+								<p><b>Alajuela:</b> Alajuela, Atenas, Poás</p>
+								<p><b>Cartago:</b> Cartago, Paraíso, La Unión, Alvarado, Oreamuno, El Guarco</p>
+								<p><b>Heredia:</b> Heredia, Barva, Santo Domingo, Santa Bárbara, San Rafael, San Isidro, Belén, Flores, San Pablo</p>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-6" >
+								<h3>Garantía</h3>
+								<p>Los productos cuentan con un año de garantía sobre defectos de fábrica, esto no incluye daños ocasionados por el mal uso del producto.</p>
+								<h3>Aviso Legal</h3>
+								<p>Muebles Rústicos San José no garantiza que los productos mostrados se encuentren en el inventario en el momento de la orden. En caso de que algún item no esté disponible por alguna razón, el cliente será notificado por e-mail. Aunque hacemos todo lo posible por mostrar la cantidad, precio y características correctas, pueden ocurrir errores.</p>
+								<h3>Política de Privacidad</h3>
+								<p>Toda la información de los clientes será guardada en estricta confidencia. Muebles Rústicos San José nunca compartirá información de los clientes con terceros. Las contraseñas será encriptadas por seguridad.</p>
+								<h3>Medidas</h3>
+								<p>Todas las medidas mostradas en la página son aproximadas y pueden variar.</p>
+								<h3>Restricciones de edad</h3>
+								<p>Es necesario la supervisión de adultos para clientes menores de 18 años.</p>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 text-center" >
+								<a class="btn btn-store" href="#" data-dismiss="modal">Regresar</a><br><br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="loginPopUp" tabindex="-1" role="dialog">
+			<div class="modal-dialog login-control" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h1 class="modal-title" id="myModalLabel">Iniciar Sesión</h1>
+					</div>
+					<div class="modal-body">
+						<div class=".col-sm-12 .col-md-12 .col-lg-12 login-row">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+								<input type="text" autofocus class="form-control" ng-model="user.name" placeholder="Usuario">
+							</div>
+						</div>
+						<div class=".col-sm-12 .col-md-12 .col-lg-12 login-row">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
+								<input type="password" ng-focus="loginError" class="form-control" ng-keypress="($event.which === 13) ? login() : 0" ng-model="user.pass" placeholder="Contraseña">
+							</div>
+						</div>
+						<div class=".col-sm-12 .col-md-12 .col-lg-12 login-row">
+							<button type="button" class="btn btn-login" ng-click="login()">Iniciar Sesión</button>
+							<button type="button" class="btn btn-register" ng-click="goToRegister()">Registrarse</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script type="text/javascript" src="config/config.js"></script>
 
 		<script type="text/javascript" src="plugins/jquery/jquery-2.2.4.min.js"></script>
-		<script type="text/javascript" src="plugins/waypoints/jquery.waypoints.min.js"></script>
 		<script type="text/javascript" src="plugins/angular/angular.min.js"></script>
-		<script type="text/javascript" src="plugins/angular-modal-service.js"></script>
 		<script type="text/javascript" src="plugins/bootstrap/bootstrap.min.js"></script>
-		<script type="text/javascript" src="plugins/singlepagenav/jquery.singlePageNav.min.js"></script>
-		<script type="text/javascript" src="plugins/countdown/jquery.countdown.min.js"></script>
-		<script type="text/javascript" src="plugins/owlcarousel/owl.carousel.min.js"></script>
-		<script type="text/javascript" src="plugins/waitforimages/jquery.waitforimages.min.js"></script>
-		<script type="text/javascript" src="plugins/later.min.js"></script>
-
-		<script type="text/javascript" src="js/hero-slider.js"></script>
-		<script type="text/javascript" src="js/project-slider.js"></script>
-		<script type="text/javascript" src="js/custom.js"></script>
 		<script type="text/javascript" src="js/app.js"></script>
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>

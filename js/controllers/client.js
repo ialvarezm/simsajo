@@ -1,6 +1,7 @@
 app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
         $scope.init = function () {
+            $('.hide').removeClass('hide');
             Utils.checkUserRole();
             $('.tool').tooltip();
             getClients();
@@ -13,8 +14,11 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
             function(response) {
                 $scope.clients = response;
                 $scope.table = true;
-                $scope.loading = false;
-                $timeout(function(){$('.tool').tooltip();}, 200);
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
             });
         };
 

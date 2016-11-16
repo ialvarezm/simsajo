@@ -3,7 +3,104 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
         $scope.init = function () {
             $scope.range = Array.apply(null, Array(5)).map(function (_, i) {return i+1;});
             $scope.getProducts();
+            setShippingPrice();
         };
+
+        $scope.initOrders = function () {
+		  	$scope.startIndex = 0;
+			$scope.limit = 8;
+            $scope.getUserOrders();
+        };
+
+        $scope.initAdminOrders = function () {
+		  	$scope.startIndex = 0;
+			$scope.limit = 8;
+            $scope.getPendingOrders();
+        };
+
+        $scope.next = function(admin){
+            if($scope.orders.length < 7) return;
+            $scope.startIndex += 8;
+            if(admin) $scope.getPendingOrders();
+            else $scope.getUserOrders();
+        };
+
+        $scope.prev = function(admin){
+            if($scope.startIndex == 0) return;
+            $scope.startIndex -= 8;
+            if(admin) $scope.getPendingOrders();
+            else $scope.getUserOrders();
+        };
+
+        var setShippingPrice = function (){
+            if(localStorage.currentUser) {
+                var user = JSON.parse(localStorage.currentUser);
+                $scope.shippingPrice = user.gam === "0" ? 20 : 0;
+            } else $scope.shippingPrice = 0;
+        }
+
+        $scope.getUserOrders = function () {
+            var user = JSON.parse(localStorage.currentUser).id;
+            QueryService.get('getUserOrders&v=order&user=' + user + '&start=' + $scope.startIndex + '&limit=' + $scope.limit, {},
+            function(response) {
+                $scope.orders = formatOrders(response);
+                $scope.pag = $scope.orders.length === 7;
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
+            });
+        }
+
+        $scope.getPendingOrders = function () {
+            var user = JSON.parse(localStorage.currentUser).id;
+            QueryService.get('getPendingOrders&v=order&start=' + $scope.startIndex + '&limit=' + $scope.limit, {},
+            function(response) {
+                $scope.orders = response;
+                console.log($scope.orders);
+                //$scope.pag = $scope.orders.length === 7;
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
+            });
+        }
+
+        $scope.changeOrderStatus = function(status, order){
+            if(confirm("¿Está seguro(a) que desea cambiar el status de la orden?")){
+                order.status = status;
+                QueryService.post('changeOrderStatus&v=order&status=' + status + '&id=' + order.numero, {},
+                function(response) {
+                    Notification.success({message: 'El status de la orden se actualizó correctamente.', delay: 2000, positionX: 'center'});
+                });
+            }
+        };
+
+        var formatOrders = function(orders){
+            var formattedOrders = [],
+                savedOrders = [],
+                groupedOrders = _.groupBy(orders, 'numeroOrden');
+            _.each(orders, function(order){
+                if(!_.includes(savedOrders, order.numeroOrden)){
+                    var new_order = {
+                        'numero': order.numeroOrden,
+                        'total': order.montoTotal,
+                        'fecha': order.fecha,
+                        'status': order.status,
+                        'shipping': order.shipping,
+                        'fechaObj': new Date(order.fecha),
+                        'details': groupedOrders[order.numeroOrden],
+                        'usuario' : order.usuario ? order.usuario + ' ' + order.apellidos : ''
+                    };
+                    formattedOrders.push(new_order);
+                    savedOrders.push(order.numeroOrden);
+                }
+            });
+
+            return _.orderBy(formattedOrders, ['fechaObj'], ['desc']);
+        }
 
         $scope.getProducts = function () {
             $scope.loading = true;
@@ -21,6 +118,8 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                     $scope.total += item.total;
                 }
             });
+            setShippingPrice();
+            $scope.total += $scope.shippingPrice;
         };
 
         $scope.placeOrder = function(){
@@ -29,9 +128,10 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                 var user = JSON.parse(localStorage.currentUser);
                 var order = {'usuario': user.id,
                              'cliente': user.nombre + ' ' + user.apellidos,
-                             'fecha': Date.today().toString("yyyy-MM-dd"),
+                             'fecha': new Date().toString("yyyy-MM-dd H:mm:ss"),
                              'montoTotal': $scope.total,
-                             'userEmail': user.email};
+                             'userEmail': user.email,
+                             'envio': $scope.shippingPrice};
                 var order_details = [];
                 $scope.products.forEach(function(item){
                     if(item.total && item.cantidad){

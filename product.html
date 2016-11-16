@@ -65,6 +65,20 @@
 											<li>
 												<a ng-click="goToUser()">Usuarios</a>
 											</li>
+											<li>
+												<a ng-click="goOrdersAdmin()">Órdenes Pendientes</a>
+											</li>
+										</ul>
+									</li>
+									<li class="ng-hide user-control" ng-show="admin">
+										<a data-toggle="dropdown">Reportes</a>
+										<ul class="dropdown-menu user-info admin">
+											<li>
+												<a ng-click="goToProduct()">Productos más vendidos</a>
+											</li>
+											<li>
+												<a ng-click="goToClient()">Clientes</a>
+											</li>
 										</ul>
 									</li>
 									<li class="dropdown ng-hide" ng-hide="loggedIn">
@@ -92,7 +106,10 @@
 										<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
 										<ul class="dropdown-menu user-info">
 											<li>
-												<button type="button" class="btn btn-logout" ng-click="logout()">Cerrar Sesión</button>
+												<button type="button" class="btn btn-logout" ng-click="goOrders()">Mis órdenes</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
 											</li>
 										</ul>
 									</li>
@@ -122,7 +139,7 @@
 						<th></th>
 					</thead>
 					<tbody ng-show="table" class="ng-hide">
-						<tr ng-repeat="product in products">
+						<tr ng-repeat="product in products" class="hide">
 							<td>{{product.nombre}}</td>
 							<td>{{product.descripcion | limitTo: 25}} {{product.descripcion.length > 25 ? '...' : ''}}</td>
 							<td>${{product.precio|number}}</td>
@@ -136,29 +153,36 @@
 				</table>
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
 			</div>
-			<div class="productForm ng-hide" ng-hide="list">
+			<div class="productForm hide" ng-hide="list">
 				<h2>{{title}}</h2>
-				<form class="">
-	                <div class="input-group">
+				<form name="productForm" ng-submit="save()" novalidate>
+	                <div class="input-group" ng-class="{ 'has-error' : productForm.name.$invalid && !productForm.name.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-cube" aria-hidden="true"></i></span>
-	                    <input type="text" autofocus class="form-control" ng-model="product.nombre" placeholder="Nombre del Producto" required>
+	                    <input name="name" type="text" autofocus class="form-control" ng-model="product.nombre" placeholder="Nombre del Producto" required>
+	                </div>
+					<p ng-show="productForm.name.$invalid && !productForm.name.$pristine" class="help-block hide">El nombre del producto es requerido.</p>
+
+	                <div class="form-group" ng-class="{ 'has-error' : productForm.cat.$invalid && !productForm.cat.$pristine }">
+						<label class="control-label">Categoría</label>
+						<select name="cat" class="form-control" ng-model="product.catId" ng-options="item.id as item.nombre for item in categories" required></select>
 	                </div>
 
-	                <div class="form-group">
-						<label class="control-label">Categoría</label>
-						<select class="form-control" ng-model="product.catId" ng-options="item.id as item.nombre for item in categories"></select>
-	                </div>
-					<div class="input-group">
+					<div class="input-group" ng-class="{ 'has-error' : productForm.price.$invalid && !productForm.price.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-usd" aria-hidden="true"></i></span>
-	                    <input type="text" ng-only-numbers class="form-control" ng-model="product.precio" placeholder="Precio" requiredpattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: 9999-9999)'>
+	                    <input type="text" name="price" ng-only-numbers class="form-control" ng-model="product.precio" placeholder="Precio" required>
 	                </div>
-					<div class="form-group">
-	                    <textarea class="form-control" rows="3" placeholder="Descripción" ng-model="product.descripcion"></textarea>
+					<p ng-show="productForm.price.$invalid && !productForm.price.$pristine" class="help-block hide">El precio del producto es requerido.</p>
+
+					<div class="form-group" ng-class="{ 'has-error' : productForm.desc.$invalid && !productForm.desc.$pristine }">
+	                    <textarea name="desc" class="form-control" rows="3" placeholder="Descripción" ng-model="product.descripcion" required></textarea>
 	                </div>
+					<p ng-show="productForm.desc.$invalid && !productForm.desc.$pristine" class="help-block hide">La descripción del producto es requerida.</p>
+
 	                <div class="form-group">
-	                    <button type="button" class="btn btn-save" name="button" ng-click="save()">Guardar</button>
+	                    <button type="submit" class="btn btn-save" name="button" ng-disabled="productForm.$invalid">Guardar</button>
 	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
 	                </div>
+
 	            </form>
 			</div>
 		</div>

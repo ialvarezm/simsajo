@@ -2,6 +2,10 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
     function loginController($scope, QueryService, Notification) {
         $scope.init = function() {
             $scope.loginError = false;
+            checkLogin();
+        };
+
+        var checkLogin = function(){
             if (localStorage.currentUser) {
                 $scope.loggedIn = true;
                 $scope.currentUser = JSON.parse(localStorage.currentUser);
@@ -9,7 +13,11 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
             } else {
                 $scope.loggedIn = false;
             }
-        };
+        }
+
+        $scope.openLoginModal = function() {
+            angular.element('#loginPopUp').modal('toggle');
+        }
 
         $scope.login = function() {
             var crypt = new Crypt();
@@ -22,9 +30,10 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
                     $scope.currentUser = response[0];
                     localStorage.currentUser = JSON.stringify($scope.currentUser);
                     $scope.admin = $scope.currentUser.rol === "1";
-
                     if(window.location.pathname !== config.redirect)
                         window.location.pathname = config.redirect;
+                    angular.element('#loginPopUp').modal('toggle');
+                    checkLogin();
                 } else {
                     $scope.loggedIn = false;
                     $scope.currentUser = {};
@@ -62,6 +71,14 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
 
         $scope.goHome = function() {
             window.location.pathname = config.redirect;
+        };
+
+        $scope.goOrders = function() {
+            window.location.pathname = config.orders;
+        };
+
+        $scope.goOrdersAdmin = function() {
+            window.location.pathname = config.orders_admin;
         };
     }
 ]);

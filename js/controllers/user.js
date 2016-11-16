@@ -1,6 +1,7 @@
 app.controller('userController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
         $scope.init = function () {
+            $('.hide').removeClass('hide');
             Utils.checkUserRole();
             $('.tool').tooltip();
             getUsers();
@@ -13,8 +14,11 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
             function(response) {
                 $scope.users = response;
                 $scope.table = true;
-                $scope.loading = false;
-                $timeout(function(){$('.tool').tooltip();}, 200);
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
             });
         };
 
@@ -47,6 +51,7 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
         $scope.cancel = function () {
             $scope.list = true;
             getUsers();
+            $scope.userForm.$setPristine();
         };
 
         $scope.remove = function (user) {

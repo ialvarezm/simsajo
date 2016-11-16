@@ -65,6 +65,20 @@
 											<li>
 												<a ng-click="goToUser()">Usuarios</a>
 											</li>
+											<li>
+												<a ng-click="goOrdersAdmin()">Órdenes Pendientes</a>
+											</li>
+										</ul>
+									</li>
+									<li class="ng-hide user-control" ng-show="admin">
+										<a data-toggle="dropdown">Reportes</a>
+										<ul class="dropdown-menu user-info admin">
+											<li>
+												<a ng-click="goToProduct()">Productos más vendidos</a>
+											</li>
+											<li>
+												<a ng-click="goToClient()">Clientes</a>
+											</li>
 										</ul>
 									</li>
 									<li class="dropdown ng-hide" ng-hide="loggedIn">
@@ -92,7 +106,10 @@
 										<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
 										<ul class="dropdown-menu user-info">
 											<li>
-												<button type="button" class="btn btn-logout" ng-click="logout()">Cerrar Sesión</button>
+												<button type="button" class="btn btn-logout" ng-click="goOrders()">Mis órdenes</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
 											</li>
 										</ul>
 									</li>
@@ -120,8 +137,8 @@
 						<th>Email</th>
 						<th></th>
 					</thead>
-					<tbody ng-show="table" class="ng-hide">
-						<tr ng-repeat="user in users">
+					<tbody ng-show="table">
+						<tr ng-repeat="user in users" class="hide">
 							<td>{{user.nombre}} {{user.apellidos}}</td>
 							<td>{{user.nombre_usuario}}</td>
 							<td>{{user.email}}</td>
@@ -134,31 +151,41 @@
 				</table>
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
 			</div>
-			<div class="clientForm ng-hide" ng-hide="list">
+			<div class="clientForm hide" ng-hide="list">
 				<h2>{{title}}</h2>
-				<form class="">
-	                <div class="input-group">
+				<form name="userForm" ng-submit="save()">
+	                <div class="input-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" autofocus class="form-control" ng-model="user.nombre" placeholder="Nombre" required>
+	                    <input type="text" autofocus class="form-control" name="name" ng-model="user.nombre" placeholder="Nombre" required>
 	                </div>
-					<div class="input-group">
+					<p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block hide">El nombre es requerido.</p>
+
+					<div class="input-group" ng-class="{ 'has-error' : userForm.lastname.$invalid && !userForm.lastname.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" class="form-control" ng-model="user.apellidos" placeholder="Apellidos" required>
+	                    <input type="text" name="lastname" class="form-control" ng-model="user.apellidos" placeholder="Apellidos" required>
 	                </div>
-					<div class="input-group">
+					<p ng-show="userForm.lastname.$invalid && !userForm.lastname.$pristine" class="help-block hide">Los apellidos son requeridos.</p>
+
+					<div class="input-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-	                    <input type="text" autofocus class="form-control" ng-model="user.nombre_usuario" placeholder="Nombre de Usuario" required>
+	                    <input type="text" name="username" autofocus class="form-control" ng-model="user.nombre_usuario" placeholder="Nombre de Usuario" required>
 	                </div>
-					<div class="input-group" ng-show="!edit">
+					<p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block hide">El nombre de usuario es requerido.</p>
+
+					<div class="input-group" ng-show="!edit" ng-class="{ 'has-error' : userForm.pass.$invalid && !userForm.pass.$pristine && !edit}">
 	                    <span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-	                    <input type="password" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
+	                    <input type="password" name="pass" class="form-control" ng-model="user.password" placeholder="Contraseña" required>
 	                </div>
-					<div class="input-group">
+					<p ng-show="userForm.pass.$invalid && !userForm.pass.$pristine && !edit" class="help-block hide">La contraseña es requerida.</p>
+
+					<div class="input-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-envelope-o" aria-hidden="true"></i></span>
-	                    <input type="email" class="form-control" ng-model="user.email" placeholder="Email" required>
+	                    <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" required>
 	                </div>
+					<p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block hide">Ingrese un email válido.</p>
+
 	                <div class="form-group">
-	                    <button type="button" class="btn btn-save" name="button" ng-click="save()">Guardar</button>
+	                    <button type="submit" class="btn btn-save" name="button" ng-disabled="userForm.$invalid">Guardar</button>
 	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
 	                </div>
 	            </form>

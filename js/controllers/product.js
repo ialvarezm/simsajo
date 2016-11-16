@@ -1,6 +1,7 @@
 app.controller('productController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
         $scope.init = function (slider) {
+            $('.hide').removeClass('hide');
             Utils.checkUserRole();
             $('.tool').tooltip();
             $scope.button = 'Ver más';
@@ -46,8 +47,11 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
                 }
 
                 $scope.table = true;
-                $scope.loading = false;
-                $timeout(function(){$('.tool').tooltip();}, 200);
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
             });
         };
 
@@ -87,6 +91,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         $scope.cancel = function () {
             $scope.list = true;
             $scope.getProducts();
+            $scope.productForm.$setPristine();
         };
 
         $scope.remove = function (product) {
