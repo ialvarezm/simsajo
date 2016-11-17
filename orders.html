@@ -139,15 +139,15 @@
 					</thead>
 					<tbody class="hide">
 						<tr ng-repeat-start="order in orders" class="hide order-row">
-							<td>{{order.numero}}</td>
-							<td>{{order.fechaObj | date : "dd/MM/yyyy - h:mm a"}}</td>
-							<td>{{order.total | currency:"$":0}}</td>
+							<td>{{order.numeroOrden}}</td>
+							<td>{{order.fecha | date : "dd/MM/yyyy - h:mm a"}}</td>
+							<td>{{order.montoTotal | currency:"$":0}}</td>
 							<td ng-class="{delivered: order.status == 'Entregado',
 										   pending: order.status == 'No Entregado',
 									       confirmed: order.status == 'Pago Confirmado',
 									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
 							<td class="action order">
-								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = true;"></i>
+								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="getOrderDetails(order)"></i>
 								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
 								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Pago Confirmado', order)"></i>
 								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
@@ -172,7 +172,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<span><b>Monto total de la orden:</b> {{order.total | currency:"$":0}}</span>
+								<span><b>Monto total de la orden:</b> {{order.montoTotal | currency:"$":0}}</span>
 							</td>
 						</tr>
 					</tbody>
@@ -180,10 +180,10 @@
 				<div class="pagination hide">
 					<div class="" style="width: 100%">
 						<div class="prev" style="width: 50%; float: left;" title="Página Anterior" ng-disabled="startIndex == 0">
-							<i class="fa fa-chevron-circle-left" ng-click="prev()"></i>
+							<i class="fa fa-chevron-circle-left" ng-click="pag('prev')"></i>
 						</div>
-						<div class="next" style="width: 50%; float: left;" ng-disabled="startIndex > 8" title="Página Siguiente">
-							<i class="fa fa-chevron-circle-right" ng-click="next()"></i>
+						<div class="next" style="width: 50%; float: left;" ng-disabled="right" title="Página Siguiente">
+							<i class="fa fa-chevron-circle-right" ng-click="pag('next')"></i>
 						</div>
 					</div>
 				</div>

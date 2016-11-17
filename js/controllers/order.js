@@ -7,29 +7,28 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
         };
 
         $scope.initOrders = function () {
+            $scope.user = JSON.parse(localStorage.currentUser).id;
 		  	$scope.startIndex = 0;
 			$scope.limit = 8;
-            $scope.getUserOrders();
+            $scope.getOrders('getUserOrders&v=order&user=' + $scope.user + '&start=' + $scope.startIndex + '&limit=' + $scope.limit);
         };
 
         $scope.initAdminOrders = function () {
 		  	$scope.startIndex = 0;
 			$scope.limit = 8;
-            $scope.getPendingOrders();
+            $scope.getOrders('getPendingOrders&v=order&start=' + $scope.startIndex + '&limit=' + $scope.limit);
         };
 
-        $scope.next = function(admin){
-            if($scope.orders.length < 7) return;
-            $scope.startIndex += 8;
-            if(admin) $scope.getPendingOrders();
-            else $scope.getUserOrders();
-        };
+        $scope.pag = function(dir, admin){
+            var url;
+            if($scope.right && dir === 'next') return;
+            if($scope.startIndex == 0 && dir === 'prev') return;
+            if(dir === 'prev') $scope.startIndex -= 8;
+            else $scope.startIndex += 8;
+            if(admin) url = 'getPendingOrders&v=order&start=' + $scope.startIndex + '&limit=' + $scope.limit;
+            else url = 'getUserOrders&v=order&user=' + $scope.user + '&start=' + $scope.startIndex + '&limit=' + $scope.limit;
 
-        $scope.prev = function(admin){
-            if($scope.startIndex == 0) return;
-            $scope.startIndex -= 8;
-            if(admin) $scope.getPendingOrders();
-            else $scope.getUserOrders();
+            $scope.getOrders(url);
         };
 
         var setShippingPrice = function (){
@@ -39,12 +38,12 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
             } else $scope.shippingPrice = 0;
         }
 
-        $scope.getUserOrders = function () {
+        $scope.getOrders = function (url) {
             var user = JSON.parse(localStorage.currentUser).id;
-            QueryService.get('getUserOrders&v=order&user=' + user + '&start=' + $scope.startIndex + '&limit=' + $scope.limit, {},
+            QueryService.get(url, {},
             function(response) {
-                $scope.orders = formatOrders(response);
-                $scope.pag = $scope.orders.length === 7;
+                $scope.orders = response;
+                $scope.right = $scope.orders.length < 8;
                 $timeout(function(){
                     $('.tool').tooltip();
                     $('.hide').removeClass('hide');
@@ -53,19 +52,16 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
             });
         }
 
-        $scope.getPendingOrders = function () {
-            var user = JSON.parse(localStorage.currentUser).id;
-            QueryService.get('getPendingOrders&v=order&start=' + $scope.startIndex + '&limit=' + $scope.limit, {},
-            function(response) {
-                $scope.orders = response;
-                console.log($scope.orders);
-                //$scope.pag = $scope.orders.length === 7;
-                $timeout(function(){
-                    $('.tool').tooltip();
-                    $('.hide').removeClass('hide');
-                    $scope.loading = false;
-                }, 200);
-            });
+        $scope.getOrderDetails = function (order) {
+            if(!order.details) {
+                QueryService.get('getOrderDetails&v=order&id=' + order.numeroOrden, {},
+                function(response) {
+                    order.details = response;
+                    order.shown = true;
+                });
+            } else {
+                order.shown = true;
+            }
         }
 
         $scope.changeOrderStatus = function(status, order){

@@ -139,7 +139,7 @@
 					</thead>
 					<tbody class="hide">
 						<tr ng-repeat-start="order in orders" class="hide order-row">
-							<td>{{order.id}}</td>
+							<td>{{order.numeroOrden}}</td>
 							<td>{{order.fecha | date : "dd/MM/yyyy - h:mm a"}}</td>
 							<td>{{order.montoTotal | currency:"$":0}}</td>
 							<td ng-class="{delivered: order.status == 'Entregado',
@@ -147,13 +147,14 @@
 									       confirmed: order.status == 'Pago Confirmado',
 									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
 							<td class="action">
-								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = true;"></i>
+								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="getOrderDetails(order)"></i>
 								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
 								<i class="fa fa-check-square-o detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado' || order.status == 'Pago Confirmado'" data-placement="top" title="Marcar como entregada" aria-hidden="true" ng-click="changeOrderStatus('Entregado', order)"></i>
+								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
 							</td>
 						</tr>
 						<tr ng-repeat-end="" class="detail-row closed" ng-if="order.shown">
-							<!-- <td colspan="5">
+							<td colspan="5">
 								<span><b>Cliente:</b> {{order.usuario}}</span> <br>
 								<span><b>Costo del envío:</b> {{order.shipping | currency:"$":0}}</span>
 								<table>
@@ -172,18 +173,18 @@
 										</tr>
 									</tbody>
 								</table>
-								<span><b>Monto total de la orden:</b> {{order.total | currency:"$":0}}</span>
-							</td> -->
+								<span><b>Monto total de la orden:</b> {{order.montoTotal | currency:"$":0}}</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="pagination hide">
 					<div class="" style="width: 100%">
 						<div class="prev" style="width: 50%; float: left;" title="Página Anterior" ng-disabled="startIndex == 0">
-							<i class="fa fa-chevron-circle-left" ng-click="prev(true)"></i>
+							<i class="fa fa-chevron-circle-left" ng-click="pag('prev', true)"></i>
 						</div>
-						<div class="next" style="width: 50%; float: left;" ng-disabled="startIndex > 8" title="Página Siguiente">
-							<i class="fa fa-chevron-circle-right" ng-click="next(true)"></i>
+						<div class="next" style="width: 50%; float: left;" ng-disabled="right" title="Página Siguiente">
+							<i class="fa fa-chevron-circle-right" ng-click="pag('next', true)"></i>
 						</div>
 					</div>
 				</div>

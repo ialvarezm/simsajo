@@ -191,7 +191,7 @@ textarea,
 }
 
 .panel table td.action {
-    width: 75px;
+    width: 100px;
     position: relative;
 }
 
@@ -387,15 +387,11 @@ table .cancelled {
     margin-bottom: 10px;
 }
 
-.order-row td.action.order{
-    width: 100px;
-}
-
 .order-row td.action.order i {
     margin-left: 5px;
 }
 
-.order-row td.action.order i.fa-ban {
+.order-row td.action i.fa-ban {
     color: #8e1111 !important;
 }
 
