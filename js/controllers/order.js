@@ -67,11 +67,20 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
         $scope.changeOrderStatus = function(status, order){
             if(confirm("¿Está seguro(a) que desea cambiar el status de la orden?")){
                 order.status = status;
-                QueryService.post('changeOrderStatus&v=order&status=' + status + '&id=' + order.numero, {},
+                QueryService.post('changeOrderStatus&v=order&status=' + status + '&id=' + order.numeroOrden, {},
                 function(response) {
                     Notification.success({message: 'El status de la orden se actualizó correctamente.', delay: 2000, positionX: 'center'});
                 });
             }
+        };
+
+        $scope.confirmPayment = function(order){
+            var transferencia = prompt("Número de transferencia bancaria:", "");
+            order.status = 'Comprobación Pendiente';
+            QueryService.post('confirmPayment&v=order&transferencia=' + transferencia + '&id=' + order.numeroOrden, {},
+            function(response) {
+                Notification.success({message: 'El status de la orden se actualizó correctamente.', delay: 2000, positionX: 'center'});
+            });
         };
 
         var formatOrders = function(orders){

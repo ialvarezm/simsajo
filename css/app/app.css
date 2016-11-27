@@ -381,6 +381,10 @@ table .cancelled {
     background-color: #f9a8a8;
 }
 
+table .paid {
+    background-color: #e0b086;
+}
+
 .detail-row table {
     width: 100%;
     margin-top: 10px;
@@ -395,7 +399,7 @@ table .cancelled {
     color: #8e1111 !important;
 }
 
-.order-row td.action.order i.fa-money {
+.order-row td.action i.fa-money {
     color: #2e58a7 !important;
 }
 

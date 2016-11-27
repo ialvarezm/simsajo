@@ -142,15 +142,17 @@
 							<td>{{order.numeroOrden}}</td>
 							<td>{{order.fecha | date : "dd/MM/yyyy - h:mm a"}}</td>
 							<td>{{order.montoTotal | currency:"$":0}}</td>
-							<td ng-class="{delivered: order.status == 'Entregado',
-										   pending: order.status == 'Pago Pendiente',
-									       confirmed: order.status == 'Pago Confirmado',
+							<td ng-class="{pending: order.status == 'Pago Pendiente',
+										   paid: order.status == 'Comprobación Pendiente',
+									       confirmed: order.status == 'Entrega Pendiente',
+										   delivered: order.status == 'Entregado',
 									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
 							<td class="action">
 								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="getOrderDetails(order)"></i>
 								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
-								<i class="fa fa-check-square-o detail action tool" data-toggle="tooltip" ng-if="order.status == 'Pago Pendiente' || order.status == 'Pago Confirmado'" data-placement="top" title="Marcar como entregada" aria-hidden="true" ng-click="changeOrderStatus('Entregado', order)"></i>
-								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'Pago Pendiente'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
+								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'Comprobación Pendiente'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Entrega Pendiente', order)"></i>
+								<i class="fa fa-check-square-o detail action tool" data-toggle="tooltip" ng-if="order.status == 'Entrega Pendiente'" data-placement="top" title="Marcar como entregada" aria-hidden="true" ng-click="changeOrderStatus('Entregado', order)"></i>
+								<i class="fa fa-ban detail action tool" data-toggle="tooltip" data-placement="top" ng-if="order.status != 'Entregado'" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
 							</td>
 						</tr>
 						<tr ng-repeat-end="" class="detail-row closed" ng-if="order.shown">
@@ -158,7 +160,8 @@
 								<span><b>Cliente:</b> {{order.usuario}}</span> <br>
 								<span><b>Dirección:</b> {{order.direccion}}</span> <br>
 								<span><b>Teléfono Principal:</b> {{order.telefono1}}</span> <br>
-								<span><b>Costo del envío:</b> {{order.shipping | currency:"$":0}}</span>
+								<span><b>Costo del envío:</b> {{order.shipping | currency:"$":0}}</span> <br>
+								<span ng-if="order.transferencia"><b>N° de transferencia bancaria:</b> {{order.transferencia}}</span>
 								<table>
 									<thead>
 										<th>Producto</th>
