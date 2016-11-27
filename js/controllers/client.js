@@ -1,16 +1,17 @@
 app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function productController($scope, QueryService, Notification, $timeout) {
-        $scope.init = function () {
+        $scope.init = function (report) {
             $('.hide').removeClass('hide');
             Utils.checkUserRole();
             $('.tool').tooltip();
-            getClients();
+            if(report) getClients('getClientReport&v=user');
+            else getClients('getUsers&v=user&role=2');
         };
 
-        var getClients = function () {
+        var getClients = function (url) {
             $scope.list = true;
             $scope.loading = true;
-            QueryService.get('getUsers&v=user&role=2', {},
+            QueryService.get(url, {},
             function(response) {
                 $scope.clients = response;
                 $scope.table = true;
@@ -22,14 +23,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
                 }, 200);
             });
         };
-
-        // $scope.excel = function () {
-        //     QueryService.get('exportClientReport&v=user', {},
-        //     function(response) {
-        //         console.log(response);
-        //     });
-        // };
-
+        
         $scope.showForm = function(edit, client){
             $scope.edit = edit;
             if(edit) $scope.title = 'Editar Cliente';

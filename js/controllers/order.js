@@ -1,7 +1,7 @@
 app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$timeout',
     function orderController($scope, QueryService, Notification, $timeout) {
         $scope.init = function () {
-            $scope.range = Array.apply(null, Array(5)).map(function (_, i) {return i+1;});
+            $scope.range = Array.apply(null, Array(6)).map(function (_, i) {return i;});
             $scope.getProducts();
             setShippingPrice();
         };
@@ -11,6 +11,12 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
 		  	$scope.startIndex = 0;
 			$scope.limit = 8;
             $scope.getOrders('getUserOrders&v=order&user=' + $scope.user + '&start=' + $scope.startIndex + '&limit=' + $scope.limit);
+        };
+
+        $scope.initReport = function (status) {
+		  	$scope.startIndex = 0;
+			$scope.limit = 8;
+            $scope.getOrders('getOrderReport&v=order&excel=0&status=' +status + '&start=' + $scope.startIndex + '&limit=' + $scope.limit, status);
         };
 
         $scope.initAdminOrders = function () {
@@ -38,12 +44,14 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
             } else $scope.shippingPrice = 0;
         }
 
-        $scope.getOrders = function (url) {
+        $scope.getOrders = function (url, status) {
             var user = JSON.parse(localStorage.currentUser).id;
             QueryService.get(url, {},
             function(response) {
                 $scope.orders = response;
                 $scope.right = $scope.orders.length < 8;
+                if(status.indexOf('Entregado') !== -1) $scope.report = config.host + "getOrderExcel&v=order&excel=1&status=" + status;
+                else $scope.report = config.host + "getCancelledOrderExcel&v=order&excel=1&status=" + status;
                 $timeout(function(){
                     $('.tool').tooltip();
                     $('.hide').removeClass('hide');
@@ -139,7 +147,7 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                              'envio': $scope.shippingPrice};
                 var order_details = [];
                 $scope.products.forEach(function(item){
-                    if(item.total && item.cantidad){
+                    if(item.total && item.cantidad > 0){
                         order_details.push({'producto': item.id,
                                             'monto': item.total,
                                             'cantidad': item.cantidad,

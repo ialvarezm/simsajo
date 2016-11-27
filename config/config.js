@@ -9,5 +9,8 @@ var config = {
     user: root + "user.html",
     orders: root + "orders.html",
     orders_admin: root + "orders-admin.html",
-    report_client: root + "report-client.html"
+    report_client: root + "report-client.html",
+    report_delivered: root + "report-delivered.html",
+    report_cancelled: root + "report-cancelled.html",
+    report_product: root + "report-product.html"
 }

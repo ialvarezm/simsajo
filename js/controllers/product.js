@@ -20,6 +20,13 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
             // }
         };
 
+        $scope.initReport = function(){
+            $('.hide').removeClass('hide');
+            Utils.checkUserRole();
+            $('.tool').tooltip();
+            $scope.getProductReport();
+        }
+
         function fileUpload() {
             var uploadfiles = document.getElementsByClassName('fileuploadbtn');
             for (var i = 0; i < uploadfiles.length; i++) {
@@ -90,6 +97,22 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
                 }
 
                 $scope.table = true;
+                $timeout(function(){
+                    $('.tool').tooltip();
+                    $('.hide').removeClass('hide');
+                    $scope.loading = false;
+                }, 200);
+            });
+        };
+
+        $scope.getProductReport = function () {
+            $scope.list = true;
+            $scope.loading = true;
+            QueryService.get('getProductReport&v=product', {},
+            function(response) {
+                $scope.products = response;
+                $scope.table = true;
+                $scope.report = config.host + "getProductExcel&v=product";
                 $timeout(function(){
                     $('.tool').tooltip();
                     $('.hide').removeClass('hide');

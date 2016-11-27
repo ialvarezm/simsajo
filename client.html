@@ -43,7 +43,7 @@
 					<ul id="navigation" class="nav navbar-nav navbar-right text-center">
 						<li><a href="#" ng-click="goTo('redirect')">Inicio</a></li>
 						<li class="ng-hide user-control" ng-show="admin">
-							<a data-toggle="dropdown">Administrador</a>
+							<a data-toggle="dropdown">Mantenimientos</a>
 							<ul class="dropdown-menu user-info">
 								<li>
 									<a  ng-click="goTo('product')">Productos</a>
@@ -116,7 +116,7 @@
 							<td>{{client.email}}</td>
 							<td>{{client.telefono1}}</td>
 							<td>{{client.telefono2}}</td>
-							<td>{{client.direccion | limitTo: 10}} {{client.direccion.length > 10 ? '...': ''}}</td>
+							<td>{{client.direccion | limitTo: 30}} {{client.direccion.length > 30 ? '...': ''}}</td>
 							<td class="action">
 								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, client)"></i>
 								<i class="fa fa-times tool remove action" data-toggle="tooltip" data-placement="right" title="Eliminar" aria-hidden="true" ng-click="remove(client)"></i>
@@ -124,6 +124,16 @@
 						</tr>
 					</tbody>
 				</table>
+				<!-- <div class="pagination hide">
+					<div class="" style="width: 100%">
+						<div class="prev" style="width: 50%; float: left;" title="Página Anterior" ng-disabled="startIndex == 0">
+							<i class="fa fa-chevron-circle-left" ng-click="pag('prev')"></i>
+						</div>
+						<div class="next" style="width: 50%; float: left;" ng-disabled="right" title="Página Siguiente">
+							<i class="fa fa-chevron-circle-right" ng-click="pag('next')"></i>
+						</div>
+					</div>
+				</div> -->
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
 			</div>
 			<div class="clientForm hide" ng-hide="list">

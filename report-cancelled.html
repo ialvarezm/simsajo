@@ -96,34 +96,79 @@
 			</div>
 		</div>
 
-		<div class="client-view" ng-controller="clientController" ng-init="init(true)">
-			<div class="panel panel-default" ng-show="list">
+		<div class="product-view" ng-controller="orderController" ng-init="initReport('Orden Cancelada')" style="margin-bottom: 120px;">
+			<div class="panel panel-default">
 				<div class="panel-heading">
-					Reporte de Clientes
+					Reporte de Órdenes Canceladas
 					<a target="_blank" href="{{report}}" style="color: white;">
 						<i class="fa fa-file-excel-o add tool" data-toggle="tooltip" data-placement="top" title="Exportar a Excel" aria-hidden="true"></i>
 					</a>
 				</div>
-				<table class="table table-striped">
+				<table class="table">
 					<thead>
-						<th>Nombre Completo</th>
-						<th>Email</th>
-						<th>Teléfono 1</th>
-						<th>Dirección</th>
-						<th>Dentro de Área Metropolitana</th>
-						<th>Compras Realizadas</th>
+						<th>Número de orden</th>
+						<th>Cliente</th>
+						<th>Fecha</th>
+						<th>Total</th>
+						<th>Status</th>
+						<th></th>
 					</thead>
-					<tbody ng-show="table" class="">
-						<tr ng-repeat="client in clients" class="hide">
-							<td>{{client.nombre}} {{client.apellidos}}</td>
-							<td>{{client.email}}</td>
-							<td>{{client.telefono1}}</td>
-							<td>{{client.direccion | limitTo: 30}} {{client.direccion.length > 30 ? '...': ''}}</td>
-							<td>{{client.gam}}</td>
-							<td>{{client.compras}}</td>
+					<tbody class="hide">
+						<tr ng-repeat-start="order in orders" class="hide order-row">
+							<td>{{order.numeroOrden}}</td>
+							<td>{{order.usuario}}</td>
+							<td>{{order.fecha | date : "dd/MM/yyyy - h:mm a"}}</td>
+							<td>{{order.montoTotal | currency:"$":0}}</td>
+							<td ng-class="{pending: order.status == 'Pago Pendiente',
+										   paid: order.status == 'Comprobación Pendiente',
+									       confirmed: order.status == 'Entrega Pendiente',
+										   delivered: order.status == 'Entregado',
+									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
+							<td class="action">
+								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="getOrderDetails(order)"></i>
+								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
+								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'Comprobación Pendiente'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Entrega Pendiente', order)"></i>
+								<i class="fa fa-check-square-o detail action tool" data-toggle="tooltip" ng-if="order.status == 'Entrega Pendiente'" data-placement="top" title="Marcar como entregada" aria-hidden="true" ng-click="changeOrderStatus('Entregado', order)"></i>								
+							</td>
+						</tr>
+						<tr ng-repeat-end="" class="detail-row closed" ng-if="order.shown">
+							<td colspan="5">
+								<span><b>Cliente:</b> {{order.usuario}}</span> <br>
+								<span><b>Dirección:</b> {{order.direccion}}</span> <br>
+								<span><b>Teléfono Principal:</b> {{order.telefono1}}</span> <br>
+								<span><b>Costo del envío:</b> {{order.shipping | currency:"$":0}}</span> <br>
+								<span ng-if="order.transferencia"><b>N° de transferencia bancaria:</b> {{order.transferencia}}</span>
+								<table>
+									<thead>
+										<th>Producto</th>
+										<th>Cantidad</th>
+										<th>Precio por unidad</th>
+										<th>Total</th>
+									</thead>
+									<tbody>
+										<tr ng-repeat="detail in order.details">
+											<td>{{detail.nombre}}</td>
+											<td>{{detail.cantidad}}</td>
+											<td>{{detail.precio | currency:"$":0}}</td>
+											<td>{{detail.monto | currency:"$":0}}</td>
+										</tr>
+									</tbody>
+								</table>
+								<span><b>Monto total de la orden:</b> {{order.montoTotal | currency:"$":0}}</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
+				<div class="pagination hide">
+					<div class="" style="width: 100%">
+						<div class="prev" style="width: 50%; float: left;" title="Página Anterior" ng-disabled="startIndex == 0">
+							<i class="fa fa-chevron-circle-left" ng-click="pag('prev', true)"></i>
+						</div>
+						<div class="next" style="width: 50%; float: left;" ng-disabled="right" title="Página Siguiente">
+							<i class="fa fa-chevron-circle-right" ng-click="pag('next', true)"></i>
+						</div>
+					</div>
+				</div>
 				<div class="loading" ng-show="loading"><i class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i></div>
 			</div>
 		</div>
@@ -147,6 +192,7 @@
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
 
 		<!-- Directives -->
         <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
@@ -154,7 +200,7 @@
 		<!-- Controllers -->
 		<script type="text/javascript" src="js/controllers/login.js"></script>
         <script type="text/javascript" src="js/controllers/register.js"></script>
-		<script type="text/javascript" src="js/controllers/client.js"></script>
+		<script type="text/javascript" src="js/controllers/order.js"></script>
         <!-- Services -->
 		<script type="text/javascript" src="js/services/queryService.js"></script>
 	</body>

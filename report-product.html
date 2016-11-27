@@ -11,12 +11,14 @@
 		<link rel="stylesheet" href="plugins/owlcarousel/owl.carousel.css">
 		<link rel="stylesheet" href="css/icons.css">
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/style-1.css">
 		<link rel="stylesheet" href="css/sliders.css">
 		<link rel="stylesheet" href="css/hero-slider.css">
 		<link rel="stylesheet" href="css/project-slider.css">
 		<link rel="stylesheet" href="css/app/app.css">
 		<link rel="stylesheet" href="css/angular-ui-notification.min.css">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/jasny-bootstrap.css">
 		<link rel="shortcut icon" href="img/ico/32.png" sizes="32x32" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" href="img/ico/60.png" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/ico/72.png" type="image/png"/>
@@ -96,31 +98,29 @@
 			</div>
 		</div>
 
-		<div class="client-view" ng-controller="clientController" ng-init="init(true)">
+		<div class="product-view" ng-controller="productController" ng-init="initReport()">
 			<div class="panel panel-default" ng-show="list">
 				<div class="panel-heading">
-					Reporte de Clientes
+					Reporte de Productos Más Vendidos
 					<a target="_blank" href="{{report}}" style="color: white;">
 						<i class="fa fa-file-excel-o add tool" data-toggle="tooltip" data-placement="top" title="Exportar a Excel" aria-hidden="true"></i>
 					</a>
 				</div>
 				<table class="table table-striped">
 					<thead>
-						<th>Nombre Completo</th>
-						<th>Email</th>
-						<th>Teléfono 1</th>
-						<th>Dirección</th>
-						<th>Dentro de Área Metropolitana</th>
-						<th>Compras Realizadas</th>
+						<th>Nombre</th>
+						<th>Descripción</th>
+						<th>Precio</th>
+						<th>Categoría</th>
+						<th>Ventas</th>
 					</thead>
-					<tbody ng-show="table" class="">
-						<tr ng-repeat="client in clients" class="hide">
-							<td>{{client.nombre}} {{client.apellidos}}</td>
-							<td>{{client.email}}</td>
-							<td>{{client.telefono1}}</td>
-							<td>{{client.direccion | limitTo: 30}} {{client.direccion.length > 30 ? '...': ''}}</td>
-							<td>{{client.gam}}</td>
-							<td>{{client.compras}}</td>
+					<tbody ng-show="table" class="ng-hide">
+						<tr ng-repeat="product in products" class="hide">
+							<td>{{product.nombre}}</td>
+							<td>{{product.descripcion | limitTo: 50}} {{product.descripcion.length > 50 ? '...' : ''}}</td>
+							<td>{{product.precio}}</td>
+							<td>{{product.categoria}}</td>
+							<td>{{product.ventas}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -139,6 +139,7 @@
 		<script type="text/javascript" src="plugins/owlcarousel/owl.carousel.min.js"></script>
 		<script type="text/javascript" src="plugins/waitforimages/jquery.waitforimages.min.js"></script>
 		<script type="text/javascript" src="plugins/later.min.js"></script>
+		<script type="text/javascript" src="plugins/jasny-bootstrap.js"></script>
 
 		<script type="text/javascript" src="js/hero-slider.js"></script>
 		<script type="text/javascript" src="js/project-slider.js"></script>
@@ -147,6 +148,7 @@
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
 
 		<!-- Directives -->
         <script type="text/javascript" src="js/directives/onlyDigits.js"></script>
@@ -154,7 +156,7 @@
 		<!-- Controllers -->
 		<script type="text/javascript" src="js/controllers/login.js"></script>
         <script type="text/javascript" src="js/controllers/register.js"></script>
-		<script type="text/javascript" src="js/controllers/client.js"></script>
+		<script type="text/javascript" src="js/controllers/product.js"></script>
         <!-- Services -->
 		<script type="text/javascript" src="js/services/queryService.js"></script>
 	</body>
