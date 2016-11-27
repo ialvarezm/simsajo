@@ -93,7 +93,7 @@ body.dark {
     width: 90%;
     margin: 0 auto;
     position: relative;
-    top: 100px;
+    top: 90px;
 }
 
 .register-form h2,
@@ -239,7 +239,7 @@ textarea.form-control {
 }
 
 #projects-container.large {
-    height: 900px;
+    height: 600px;
 }
 
 #overlay, #overlay-msg {
@@ -421,4 +421,49 @@ table .cancelled {
 
 .pagination i {
     cursor: pointer;
+}
+
+.thumbnail {
+    height: 135px !important;
+}
+
+.fileinput .btn {
+    background-color: #23A657;
+    color: white;
+}
+
+.prodInfo {
+    font-size: 16px;
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.prodInfo .col-md-12 {
+    background-color: #ddd;
+    padding: 15px;
+}
+
+.prodInfo .top {
+    border-radius: 10px 10px 0 0;
+}
+
+.prodInfo .bottom {
+    border-radius: 0 0 10px 10px;
+}
+
+.fileupload {
+    margin-top: 20px;
+}
+
+.fileupload button {
+    margin-top: 25px;
+}
+
+.prodInfo .title {
+    color: #23A657;
+}
+
+.desc {
+    font-size: 20px;
 }

@@ -143,14 +143,14 @@
 							<td>{{order.fecha | date : "dd/MM/yyyy - h:mm a"}}</td>
 							<td>{{order.montoTotal | currency:"$":0}}</td>
 							<td ng-class="{delivered: order.status == 'Entregado',
-										   pending: order.status == 'No Entregado',
+										   pending: order.status == 'Pago Pendiente',
 									       confirmed: order.status == 'Pago Confirmado',
 									       cancelled: order.status == 'Orden Cancelada'}">{{order.status}}</td>
 							<td class="action order">
 								<i class="fa fa-chevron-circle-down detail action tool" ng-if="!order.shown" data-toggle="tooltip" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="getOrderDetails(order)"></i>
 								<i class="fa fa-chevron-circle-up detail action tool" data-toggle="tooltip" ng-if="order.shown" data-placement="top" title="Ver detalles" aria-hidden="true" ng-click="order.shown = false"></i>
-								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Pago Confirmado', order)"></i>
-								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'No Entregado'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
+								<i class="fa fa-money detail action tool" data-toggle="tooltip" ng-if="order.status == 'Pago Pendiente'" data-placement="top" title="Confirmar Pago" aria-hidden="true" ng-click="changeOrderStatus('Pago Confirmado', order)"></i>
+								<i class="fa fa-ban detail action tool" data-toggle="tooltip" ng-if="order.status == 'Pago Pendiente'" data-placement="top" title="Cancelar Orden" aria-hidden="true" ng-click="changeOrderStatus('Orden Cancelada', order)"></i>
 							</td>
 						</tr>
 						<tr ng-repeat-end="" class="detail-row closed" ng-if="order.shown">

@@ -20,6 +20,39 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
             // }
         };
 
+        function fileUpload() {
+            var uploadfiles = document.getElementsByClassName('fileuploadbtn');
+            for (var i = 0; i < uploadfiles.length; i++) {
+                uploadfiles[i].addEventListener('change', changeEvent, true);
+            }
+        }
+
+        function changeEvent() {
+            var file = this.files[0];
+
+            if(!_.includes($scope.product.photos, {'nombre': file.name})){
+                uploadFile(file);
+                $scope.product.photos.push({
+                    'nombre': file.name,
+                    'principal': _.includes(this.classList, 'main') ? '1' : '0',
+                    'id': $scope.edit ? $(this).data('imageid') : ''
+                });
+            }
+        }
+
+        function uploadFile(file){
+            var url = "server/fileUpload.php";
+            var xhr = new XMLHttpRequest();
+            var fd = new FormData();
+            xhr.open("POST", url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                }
+            };
+            fd.append('uploaded_file', file);
+            xhr.send(fd);
+        }
+
         function random(min, max) {
             min = Math.ceil(min);
             max = Math.floor(max);
@@ -27,10 +60,20 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         }
 
         function assignImages(products) {
-            products.forEach(function(item){
-                item['image'] = 'img/product' + random(1,3) + '.jpg';
-                item['imageArray'] = 'img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg,img/' + random(1,12) + '.jpg';
+            QueryService.get('getAllProductImages&v=product', {},
+            function(response) {
+                var groupedImages = _.groupBy(response, 'producto');
+                products.forEach(function(item){
+                    var image = _.filter(groupedImages[item.id], {'principal': '1'})[0];
+                    var images = groupedImages[item.id];
+                    item['image'] = 'img/' + image.nombre;
+                    item['imageArray'] = [];
+                    images.forEach(function(value){
+                        item['imageArray'].push('img/' + value.nombre);
+                    });
+                });
             });
+            console.log(products);
             return products;
         }
 
@@ -70,7 +113,44 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
             $scope.product = product;
         };
 
+        $scope.next = function(){
+            $(".fileinput").fileinput('clear');
+            var category = _.filter($scope.categories, {'id': $scope.product.catId});
+            $scope.product['categoria'] = category[0].nombre;
+            $scope.savedProd = $scope.product;
+            $scope.savedProd.photos = [];
+            if($scope.edit) {
+                $scope.title = "Editar Imágenes";
+                loadImages($scope.product.id);
+            } else {
+                $scope.title = "Agregar Imágenes";
+            }
+            fileUpload();
+        };
+
+        function loadImages(id) {
+            QueryService.get('getProductImages&v=product&id=' + id, {},
+            function(response) {
+                $scope.prodImages = response;
+                response.forEach(function(photo){
+                    if(photo.principal === "1") {
+                        $("#mainPhoto .fileinput-preview").append('<img src="img/' + photo.nombre + '">');
+                        $("#mainPhoto .fileuploadbtn").attr('data-imageid', photo.id);
+                    }
+                });
+                var thumbs = $(".other");
+                for (var i = 1; i < response.length; i++) {
+                    $(thumbs[i-1]).find('.fileinput-preview').append('<img src="img/' + response[i].nombre + '">');
+                    $(thumbs[i-1]).find(".fileuploadbtn").attr('data-imageid', response[i].id);
+                }
+            });
+        }
+
         $scope.save = function(){
+            if ($scope.savedProd.photos.length === 0 && !$scope.edit) {
+                Notification.error({message: 'Por favor agregue al menos una imagen para el producto.', delay: 3000, positionX: 'center'});
+                return;
+            }
             var url, message;
             if($scope.edit) {
                 url = 'updateProduct';
@@ -85,13 +165,16 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
                 $scope.cancel();
                 Notification.success({message: message, delay: 2000, positionX: 'center'});
             });
-
         };
+
 
         $scope.cancel = function () {
             $scope.list = true;
             $scope.getProducts();
             $scope.productForm.$setPristine();
+            delete $scope.savedProd;
+            $(".fileinput").fileinput('clear');
+            $(".fileinput").fileinput('reset');
         };
 
         $scope.remove = function (product) {

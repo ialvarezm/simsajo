@@ -11,12 +11,14 @@
 		<link rel="stylesheet" href="plugins/owlcarousel/owl.carousel.css">
 		<link rel="stylesheet" href="css/icons.css">
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/style-1.css">
 		<link rel="stylesheet" href="css/sliders.css">
 		<link rel="stylesheet" href="css/hero-slider.css">
 		<link rel="stylesheet" href="css/project-slider.css">
 		<link rel="stylesheet" href="css/app/app.css">
 		<link rel="stylesheet" href="css/angular-ui-notification.min.css">
 		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/jasny-bootstrap.css">
 		<link rel="shortcut icon" href="img/ico/32.png" sizes="32x32" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" href="img/ico/60.png" type="image/png"/>
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/ico/72.png" type="image/png"/>
@@ -141,8 +143,8 @@
 					<tbody ng-show="table" class="ng-hide">
 						<tr ng-repeat="product in products" class="hide">
 							<td>{{product.nombre}}</td>
-							<td>{{product.descripcion | limitTo: 25}} {{product.descripcion.length > 25 ? '...' : ''}}</td>
-							<td>${{product.precio|number}}</td>
+							<td>{{product.descripcion | limitTo: 50}} {{product.descripcion.length > 25 ? '...' : ''}}</td>
+							<td>{{product.precio | currency:"$":0}}</td>
 							<td>{{product.categoria}}</td>
 							<td class="action">
 								<i class="fa fa-pencil-square-o tool edit action" data-toggle="tooltip" data-placement="top" title="Editar" aria-hidden="true" ng-click="showForm(true, product)"></i>
@@ -155,7 +157,7 @@
 			</div>
 			<div class="productForm hide" ng-hide="list">
 				<h2>{{title}}</h2>
-				<form name="productForm" ng-submit="save()" novalidate>
+				<form name="productForm" ng-submit="next()" novalidate ng-hide="savedProd">
 	                <div class="input-group" ng-class="{ 'has-error' : productForm.name.$invalid && !productForm.name.$pristine }">
 	                    <span class="input-group-addon"><i class="fa fa-cube" aria-hidden="true"></i></span>
 	                    <input name="name" type="text" autofocus class="form-control" ng-model="product.nombre" placeholder="Nombre del Producto" required>
@@ -177,13 +179,69 @@
 	                    <textarea name="desc" class="form-control" rows="3" placeholder="Descripción" ng-model="product.descripcion" required></textarea>
 	                </div>
 					<p ng-show="productForm.desc.$invalid && !productForm.desc.$pristine" class="help-block hide">La descripción del producto es requerida.</p>
-
 	                <div class="form-group">
-	                    <button type="submit" class="btn btn-save" name="button" ng-disabled="productForm.$invalid">Guardar</button>
+	                    <button type="submit" class="btn btn-save" name="button" ng-disabled="productForm.$invalid">Siguiente</button>
 	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
 	                </div>
 
 	            </form>
+				<div class="prodInfo" ng-show="savedProd">
+					<div class="row col-sm-12 col-md-12 col-lg-12 top">
+						<div class="col-sm-6 col-md-6 col-lg-6">
+							<span class="title">Nombre:</span>
+							<span>{{savedProd.nombre}}</span>
+						</div>
+						<div class="col-sm-6 col-md-6 col-lg-6">
+							<span class="title">Categoría:</span>
+							<span>{{savedProd.categoria}}</span>
+						</div>
+					</div>
+					<div class="row col-sm-12 col-md-12 col-lg-12 bottom">
+						<div class="col-sm-6 col-md-6 col-lg-6">
+							<span class="title">Precio:</span>
+							<span>{{savedProd.precio | currency:"$":0}}</span>
+						</div>
+						<div class="col-sm-6 col-md-6 col-lg-6">
+							<span class="title">Descripción:</span>
+							<span>{{savedProd.descripcion}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="row col-sm-12 col-md-12 col-lg-12 fileupload hide" ng-show="savedProd">
+					<div class="fileinput fileinput-new col-sm-3 col-md-3 col-lg-3" id="mainPhoto" data-provides="fileinput">
+						<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+						<div>
+							<span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imagen principal</span><span class="fileinput-exists">Cambiar</span><input class="fileuploadbtn main" type="file"></span>
+							<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+						</div>
+					</div>
+					<div class="fileinput fileinput-new col-sm-3 col-md-3 col-lg-3 other" data-provides="fileinput">
+						<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+						<div>
+							<span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imagen</span><span class="fileinput-exists">Cambiar</span><input class="fileuploadbtn" type="file"></span>
+							<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+						</div>
+					</div>
+					<div class="fileinput fileinput-new col-sm-3 col-md-3 col-lg-3 other" data-provides="fileinput">
+						<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+						<div>
+							<span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imagen</span><span class="fileinput-exists">Cambiar</span><input class="fileuploadbtn" type="file"></span>
+							<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+						</div>
+					</div>
+					<div class="fileinput fileinput-new col-sm-3 col-md-3 col-lg-3 other" data-provides="fileinput">
+						<div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+						<div>
+							<span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imagen</span><span class="fileinput-exists">Cambiar</span><input class="fileuploadbtn" type="file"></span>
+							<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+						</div>
+					</div>
+
+					<div class="form-group">
+	                    <button type="button" class="btn btn-save" name="button" ng-click="save()">Guardar</button>
+	                    <button type="button" class="btn btn-cancel" name="button" ng-click="cancel()">Cancelar</button>
+	                </div>
+				</div>
 			</div>
 		</div>
 
@@ -198,6 +256,7 @@
 		<script type="text/javascript" src="plugins/owlcarousel/owl.carousel.min.js"></script>
 		<script type="text/javascript" src="plugins/waitforimages/jquery.waitforimages.min.js"></script>
 		<script type="text/javascript" src="plugins/later.min.js"></script>
+		<script type="text/javascript" src="plugins/jasny-bootstrap.js"></script>
 
 		<script type="text/javascript" src="js/hero-slider.js"></script>
 		<script type="text/javascript" src="js/project-slider.js"></script>
@@ -206,6 +265,7 @@
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
 
 		<!-- Directives -->
         <script type="text/javascript" src="js/directives/onlyDigits.js"></script>

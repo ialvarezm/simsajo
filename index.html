@@ -123,7 +123,7 @@
 									<div class="hero-unit">
 										<h2>Mesa de noche</h2>
 										<!-- <p>Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p> -->
-										<a class="btn btn-store outline smooth-scroll" href="#products">Comprar $400</a>
+										<a class="btn btn-store outline smooth-scroll" href="#products">Comprar $100</a>
 									</div>
 								</div>
 							</div>
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 
-				<div class="item m-center" style="background-image: url(img/10.jpg);">
+				<div class="item m-center" style="background-image: url(img/chimenea1.jpg);">
 					<div class="center-box">
 						<span class="overlay-bg"></span>
 						<div class="container-fluid">
@@ -140,7 +140,7 @@
 									<div class="hero-unit">
 										<h2>Chimenea</h2>
 										<!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p> -->
-										<a class="btn btn-store outline smooth-scroll" href="#products">Comprar $600</a>
+										<a class="btn btn-store outline smooth-scroll" href="#products">Comprar $150</a>
 									</div>
 								</div>
 							</div>
@@ -167,12 +167,12 @@
 							<img class="img-responsive project-image" src="{{product.image}}" alt="">
 						</div>
 						<div class="product-info col-md-12">
-							<p class="project-price">${{product.precio}}</p>
+							<p class="project-price">{{product.precio | currency}}</p>
 							<div>
 								<h4 class="project-title">{{product.nombre}}</h4>
 							</div>
 						</div>
-						<div class="sr-only project-description"  data-oldprice="" data-images="{{product.imageArray}}"></div>
+						<div class="sr-only project-description"  data-oldprice="" data-images="{{product.imageArray.join(',')}}">{{product.descripcion}}</div>
 					</article>
 				</div>
 				<div id="actions" class="row hide">
@@ -202,7 +202,12 @@
 										</div>
 									</div>
 									<div id="project-content" class="col-md-8 ">
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien risus, blandit at fringilla ac, varius sed dolor. Donec augue lacus, vulputate sed consectetur facilisis, interdum pharetra ligula. Nulla suscipit erat nibh, ut porttitor nisl dapibus eu.</p>
+										<div class="col-md-8 desc">
+
+										</div>
+										<div class="col-md-4 button">
+
+										</div>
 									</div>
 								</div>
 							</div>
@@ -520,6 +525,7 @@
 		<script type="text/javascript" src="js/angular-ui-notification.min.js"></script>
 		<script src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.js"></script>
 
 		<script type="text/javascript" src="js/utils.js"></script>
 
