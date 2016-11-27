@@ -28,97 +28,69 @@
 		<![endif]-->
 	</head>
 
-	<body class="dark">
+	<body class="dark" ng-controller="loginController" ng-init = "init()">
 		<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" ng-click="goHome()">
+					<a class="navbar-brand" ng-click="goTo('redirect')" style="cursor:pointer;">
 						<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
 					</a>
 				</div>
 				<div class="collapse navbar-collapse">
-					<div id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="loginController" ng-init = "init()">
-						<div class="container">
-							<div class="navbar-header">
-								<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-									<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-								</button>
-								<a class="navbar-brand" ng-click="goHome()" href="#">
-									<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
-								</a>
-							</div>
-							<div class="collapse navbar-collapse">
-								<ul id="navigation" class="nav navbar-nav navbar-right text-center">
-									<li><a href="#" ng-click="goHome()">Inicio</a></li>
-									<li class="ng-hide user-control" ng-show="admin">
-										<a data-toggle="dropdown">Administrador</a>
-										<ul class="dropdown-menu user-info">
-											<li>
-												<a  ng-click="goToProduct()">Productos</a>
-											</li>
-											<li>
-												<a ng-click="goToClient()">Clientes</a>
-											</li>
-											<li>
-												<a ng-click="goToUser()">Usuarios</a>
-											</li>
-											<li>
-												<a ng-click="goOrdersAdmin()">Órdenes Pendientes</a>
-											</li>
-										</ul>
-									</li>
-									<li class="ng-hide user-control" ng-show="admin">
-										<a data-toggle="dropdown">Reportes</a>
-										<ul class="dropdown-menu user-info admin">
-											<li>
-												<a ng-click="goToProduct()">Productos más vendidos</a>
-											</li>
-											<li>
-												<a ng-click="goToClient()">Clientes</a>
-											</li>
-										</ul>
-									</li>
-									<li class="dropdown ng-hide" ng-hide="loggedIn">
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Iniciar Sesión</button>
-										<ul class="dropdown-menu login-control">
-											<li>
-												<div class="input-group">
-													<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-													<input type="text" autofocus class="form-control" ng-model="user.name" placeholder="Usuario">
-												</div>
-											</li>
-											<li>
-												<div class="input-group">
-													<span class="input-group-addon"><i class="fa fa-unlock-alt" aria-hidden="true"></i></span>
-													<input type="password" ng-focus="loginError" class="form-control" ng-keypress="($event.which === 13) ? login() : 0" ng-model="user.pass" placeholder="Contraseña">
-												</div>
-											</li>
-											<li>
-												<button type="button" class="btn btn-login" ng-click="login()">Iniciar Sesión</button>
-												<button type="button" class="btn btn-register" ng-click="goToRegister()">Registrarse</button>
-											</li>
-										</ul>
-									</li>
-									<li class="dropdown ng-hide user-control" ng-show="loggedIn">
-										<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
-										<ul class="dropdown-menu user-info">
-											<li>
-												<button type="button" class="btn btn-logout" ng-click="goOrders()">Mis órdenes</button>
-											</li>
-											<li>
-												<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
-											</li>
-										</ul>
-									</li>
-								</ul>
-							</div>
-
-						</div>
-					</div>
-
+					<ul id="navigation" class="nav navbar-nav navbar-right text-center">
+						<li><a href="#" ng-click="goTo('redirect')">Inicio</a></li>
+						<li class="ng-hide user-control" ng-show="admin">
+							<a data-toggle="dropdown">Administrador</a>
+							<ul class="dropdown-menu user-info">
+								<li>
+									<a  ng-click="goTo('product')">Productos</a>
+								</li>
+								<li>
+									<a ng-click="goTo('client')">Clientes</a>
+								</li>
+								<li>
+									<a ng-click="goTo('user')">Usuarios</a>
+								</li>
+								<li>
+									<a ng-click="goTo('orders_admin')">Órdenes Pendientes</a>
+								</li>
+							</ul>
+						</li>
+						<li class="ng-hide user-control" ng-show="admin">
+							<a data-toggle="dropdown">Reportes</a>
+							<ul class="dropdown-menu user-info admin">
+								<li>
+									<a ng-click="goTo('report_product')">Productos más vendidos</a>
+								</li>
+								<li>
+									<a ng-click="goTo('report_client')">Clientes</a>
+								</li>
+								<li>
+									<a ng-click="goTo('report_delivered')">Órdenes Entregadas</a>
+								</li>
+								<li>
+									<a ng-click="goTo('report_cancelled')">Órdenes Canceladas</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown ng-hide" ng-hide="loggedIn">
+							<button type="button" class="btn btn-default dropdown-toggle" ng-click="openLoginModal()">Iniciar Sesión</button>
+						</li>
+						<li class="dropdown ng-hide user-control" ng-show="loggedIn">
+							<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
+							<ul class="dropdown-menu user-info">
+								<li>
+									<button type="button" class="btn btn-logout" ng-click="goTo('orders')">Mis órdenes</button>
+								</li>
+								<li>
+									<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
+								</li>
+							</ul>
+						</li>
+					</ul>
 				</div>
 
 			</div>

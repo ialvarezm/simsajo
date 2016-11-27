@@ -53,32 +53,40 @@ app.controller('loginController', ['$scope', 'QueryService', 'Notification',
             window.location.pathname = config.redirect;
         }
 
-        $scope.goToRegister = function() {
-            window.location.pathname = config.register;
+        $scope.goTo = function(path) {
+            window.location.pathname = config[path];
         };
 
-        $scope.goToProduct = function() {
-            window.location.pathname = config.product;
-        };
-
-        $scope.goToClient = function() {
-            window.location.pathname = config.client;
-        };
-
-        $scope.goToUser = function() {
-            window.location.pathname = config.user;
-        };
-
-        $scope.goHome = function() {
-            window.location.pathname = config.redirect;
-        };
-
-        $scope.goOrders = function() {
-            window.location.pathname = config.orders;
-        };
-
-        $scope.goOrdersAdmin = function() {
-            window.location.pathname = config.orders_admin;
-        };
+        // $scope.goToRegister = function() {
+        //     window.location.pathname = config.register;
+        // };
+        //
+        // $scope.goToProduct = function() {
+        //     window.location.pathname = config.product;
+        // };
+        //
+        // $scope.goToClient = function() {
+        //     window.location.pathname = config.client;
+        // };
+        //
+        // $scope.goToUser = function() {
+        //     window.location.pathname = config.user;
+        // };
+        //
+        // $scope.goHome = function() {
+        //     window.location.pathname = config.redirect;
+        // };
+        //
+        // $scope.goOrders = function() {
+        //     window.location.pathname = config.orders;
+        // };
+        //
+        // $scope.goOrdersAdmin = function() {
+        //     window.location.pathname = config.orders_admin;
+        // };
+        //
+        // $scope.goOrdersAdmin = function() {
+        //     window.location.pathname = config.orders_admin;
+        // };
     }
 ]);

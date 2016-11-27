@@ -14,6 +14,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
             function(response) {
                 $scope.clients = response;
                 $scope.table = true;
+                $scope.report = config.host + "exportClientReport&v=user";
                 $timeout(function(){
                     $('.tool').tooltip();
                     $('.hide').removeClass('hide');
@@ -21,6 +22,13 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
                 }, 200);
             });
         };
+
+        // $scope.excel = function () {
+        //     QueryService.get('exportClientReport&v=user', {},
+        //     function(response) {
+        //         console.log(response);
+        //     });
+        // };
 
         $scope.showForm = function(edit, client){
             $scope.edit = edit;

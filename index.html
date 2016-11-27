@@ -36,7 +36,7 @@
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 						<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/muebleria/www/index.html">
+					<a class="navbar-brand" ng-click="goTo('redirect')" style="cursor:pointer;">
 						<img id="navlogo" src="img/logo.png" alt="" width="122" height="45">
 					</a>
 				</div>
@@ -44,18 +44,18 @@
 					<ul id="navigation" class="nav navbar-nav navbar-right text-center">
 						<li class="ng-hide user-control" ng-show="admin">
 							<a data-toggle="dropdown">Administrador</a>
-							<ul class="dropdown-menu user-info admin">
+							<ul class="dropdown-menu user-info">
 								<li>
-									<a ng-click="goToProduct()">Productos</a>
+									<a  ng-click="goTo('product')">Productos</a>
 								</li>
 								<li>
-									<a ng-click="goToClient()">Clientes</a>
+									<a ng-click="goTo('client')">Clientes</a>
 								</li>
 								<li>
-									<a ng-click="goToUser()">Usuarios</a>
+									<a ng-click="goTo('user')">Usuarios</a>
 								</li>
 								<li>
-									<a ng-click="goOrdersAdmin()">Órdenes Pendientes</a>
+									<a ng-click="goTo('orders_admin')">Órdenes Pendientes</a>
 								</li>
 							</ul>
 						</li>
@@ -63,10 +63,16 @@
 							<a data-toggle="dropdown">Reportes</a>
 							<ul class="dropdown-menu user-info admin">
 								<li>
-									<a ng-click="goToProduct()">Productos más vendidos</a>
+									<a ng-click="goTo('report_product')">Productos más vendidos</a>
 								</li>
 								<li>
-									<a ng-click="goToClient()">Clientes</a>
+									<a ng-click="goTo('report_client')">Clientes</a>
+								</li>
+								<li>
+									<a ng-click="goTo('report_delivered')">Órdenes Entregadas</a>
+								</li>
+								<li>
+									<a ng-click="goTo('report_cancelled')">Órdenes Canceladas</a>
 								</li>
 							</ul>
 						</li>
@@ -81,7 +87,7 @@
 							<a class="user-info" data-toggle="dropdown">Hola, {{currentUser.nombre}}!</a>
 							<ul class="dropdown-menu user-info">
 								<li>
-									<button type="button" class="btn btn-logout" ng-click="goOrders()">Mis órdenes</button>
+									<button type="button" class="btn btn-logout" ng-click="goTo('orders')">Mis órdenes</button>
 								</li>
 								<li>
 									<button type="button" class="btn btn-logout logout" ng-click="logout()">Cerrar Sesión</button>
@@ -499,7 +505,7 @@
 						</div>
 						<div class=".col-sm-12 .col-md-12 .col-lg-12 login-row">
 							<button type="button" class="btn btn-login" ng-click="login()">Iniciar Sesión</button>
-							<button type="button" class="btn btn-register" ng-click="goToRegister()">Registrarse</button>
+							<button type="button" class="btn btn-register" ng-click="goTo('register')">Registrarse</button>
 						</div>
 					</div>
 				</div>

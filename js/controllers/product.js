@@ -101,7 +101,7 @@ app.controller('productController', ['$scope', 'QueryService', 'Notification', '
         var getCategories = function () {
             QueryService.get('getCategories&v=product', {},
             function(response) {
-                $scope.categories = response;
+                $scope.categories = _.sortBy(response, 'nombre');
             });
         };
 

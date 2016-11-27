@@ -8,5 +8,6 @@ var config = {
     client: root + "client.html",
     user: root + "user.html",
     orders: root + "orders.html",
-    orders_admin: root + "orders-admin.html"
+    orders_admin: root + "orders-admin.html",
+    report_client: root + "report-client.html"
 }
