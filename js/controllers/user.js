@@ -38,14 +38,22 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
             }else {
                 url = 'addAdmin&v=user&rol=1';
                 message = 'Usuario guardado';
+                var crypt = new Crypt();
+                $scope.user.password = crypt.HASH.md5($scope.user.password).toString();
             }
-            QueryService.post(url, $scope.user,
+            QueryService.get('getUserByName&v=user&name=' + $scope.user.nombre_usuario, {},
             function(response) {
-                $scope.user =  {};
-                $scope.cancel();
-                Notification.success({message: message, delay: 2000, positionX: 'center'});
+                if(response.length && !$scope.edit){
+                    Notification.error({message: "Ya existe un usuario con el nombre <b><u>" + $scope.user.nombre_usuario + "</u></b>. Por favor elija otro.", delay: 4000, positionX: 'center'});
+                } else {
+                    QueryService.post(url, $scope.user,
+                    function(response) {
+                        $scope.user =  {};
+                        $scope.cancel();
+                        Notification.success({message: message, delay: 2000, positionX: 'center'});
+                    });
+                }
             });
-
         };
 
         $scope.cancel = function () {
@@ -56,9 +64,21 @@ app.controller('userController', ['$scope', 'QueryService', 'Notification', '$ti
 
         $scope.remove = function (user) {
             if (confirm("Está seguro que desea eliminar a " + user.nombre_usuario + '?')) {
-                QueryService.post('removeUser&v=user&id=' + user.id, {},
+                QueryService.get('getUserOrders&v=order&user=' + user.id + '&start=0&limit=100', {},
                 function (response) {
-                    getUsers();
+                    var openOrders = _.filter(response, function(item){
+                        return item.status === 'Entrega Pendiente' ||
+                               item.status === 'Pago Pendiente' ||
+                               item.status === 'Comprobación Pendiente';
+                    });
+                    if(openOrders.length > 0) {
+                        Notification.error({message: 'Este usuario cuenta con órdenes abiertas, no puede ser eliminado.', delay: 3000, positionX: 'center'});
+                    } else {
+                        QueryService.post('removeUser&v=user&id=' + user.id, {},
+                        function (response) {
+                            getUsers();
+                        });
+                    }
                 });
             }
         };

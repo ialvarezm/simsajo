@@ -23,7 +23,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
                 }, 200);
             });
         };
-        
+
         $scope.showForm = function(edit, client){
             $scope.edit = edit;
             if(edit) $scope.title = 'Editar Cliente';
@@ -41,6 +41,7 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
                 url = 'addClient&v=user';
                 message = 'Cliente guardado';
             }
+
             QueryService.post(url, $scope.client,
             function(response) {
                 $scope.client =  {};
@@ -57,9 +58,21 @@ app.controller('clientController', ['$scope', 'QueryService', 'Notification', '$
 
         $scope.remove = function (client) {
             if (confirm("Está seguro que desea eliminar a " + client.nombre + ' ' + client.apellidos + '?')) {
-                QueryService.post('removeUser&v=user&id=' + client.id, {},
+                QueryService.get('getUserOrders&v=order&user=' + client.id + '&start=0&limit=100', {},
                 function (response) {
-                    getClients();
+                    var openOrders = _.filter(response, function(item){
+                        return item.status === 'Entrega Pendiente' ||
+                               item.status === 'Pago Pendiente' ||
+                               item.status === 'Comprobación Pendiente';
+                    });
+                    if(openOrders.length > 0) {
+                        Notification.error({message: 'Este usuario cuenta con órdenes abiertas, no puede ser eliminado.', delay: 3000, positionX: 'center'});
+                    } else {
+                        QueryService.post('removeUser&v=user&id=' + client.id, {},
+                        function (response) {
+                            getClients('getUsers&v=user&role=2');
+                        });
+                    }
                 });
             }
         };

@@ -50,8 +50,10 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
             function(response) {
                 $scope.orders = response;
                 $scope.right = $scope.orders.length < 8;
-                if(status.indexOf('Entregado') !== -1) $scope.report = config.host + "getOrderExcel&v=order&excel=1&status=" + status;
-                else $scope.report = config.host + "getCancelledOrderExcel&v=order&excel=1&status=" + status;
+                if(status){
+                    if(status.indexOf('Entregado') !== -1) $scope.report = config.host + "getOrderExcel&v=order&excel=1&status=" + status;
+                    else $scope.report = config.host + "getCancelledOrderExcel&v=order&excel=1&status=" + status;
+                }
                 $timeout(function(){
                     $('.tool').tooltip();
                     $('.hide').removeClass('hide');
@@ -181,5 +183,6 @@ app.controller('orderController', ['$scope', 'QueryService', 'Notification', '$t
                 Notification.error({message: "Debe iniciar sesión o registrarse para realizar la orden.", delay: 2000, positionX: 'center'});
             }
         };
+
     }
 ]);
