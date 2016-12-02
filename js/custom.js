@@ -100,9 +100,6 @@ $(document).ready(function() {
 		}
 	});
 
-
-
-
 	/* style switch	==============================================*/
 	$('#style-switcher h2 a').click(function(){
 		$('#style-switcher').toggleClass('open');

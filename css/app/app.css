@@ -349,6 +349,14 @@ input.ng-dirty.ng-invalid-required:focus {
     font-size: 50px;
 }
 
+.help-modal .close {
+    color: white;
+    text-shadow: none;
+    opacity: 1;
+    font-size: 20px;
+    margin-top: 21px;
+}
+
 #loginPopUp .modal-body {
     width: 70%;
     margin: 0 auto;
@@ -470,4 +478,39 @@ table .paid {
 
 .desc {
     font-size: 20px;
+}
+
+.help-modal img {
+    height: 250px;
+}
+
+.help-modal .image-help {
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.help-modal .small-image {
+    height: 30px;
+}
+
+.help-modal h3 {
+    color: #23A657;
+    font-weight: bold;
+}
+
+.help-link {
+    position: absolute;
+    left: 11%;
+    text-decoration: underline;
+    top: 52%;
+}
+
+footer {
+    position: relative;
+}
+
+.help-link:hover {
+    color: white;
+    text-decoration: underline;
 }

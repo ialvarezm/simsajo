@@ -165,6 +165,67 @@
 			</div>
 		</div>
 
+		<div class="modal fade help-modal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="color-bg">
+						<div class="container">
+							<div class="row ">
+								<div class="col-xs-12 col-sm-12 col-md-12 color-bg light-typo" id="9modal-bar">
+									<h2 class="pull-left">AYUDA EN LÍNEA</h2>
+									<a class="close pull-right" href="#" data-dismiss="modal" ><i class="icon-close"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container">
+						<div class="row ">
+							<div class="col-sm-12 col-md-12 col-lg-12" >
+								<h3>Registro e inicio de sesión</h3>
+								<p>Para iniciar sesión debe hacer click en el botón “Iniciar Sesión”, si cuenta con un usuario y contraseña y si no dar click al botón “Registrarse” que lo llevará a la siguiente página donde debe llenar su información y dar click en el botón registrarse.</p>
+								<div class="image-help">
+									<img src="img/register.png" alt="">
+								</div>
+								<p>Luego de llenar el registro debe iniciar sesión con su usuario y contraseña y dar click en “Iniciar Sesión”.</p>
+								<div class="image-help">
+									<img src="img/login.png" alt="">
+								</div>
+								<h3>Compra de Productos</h3>
+								<p>Para comprar un producto debe seleccionar la cantidad del respectivo producto deseado y luego hacer click en “ORDENAR PRODUCTO(S)”.</p>
+								<div class="image-help">
+									<img src="img/order.png" alt="">
+								</div>
+								<p>Se enviará un mensaje a su correo electrónico con la información de la orden y el número de cuenta donde podrá realizar su transferencia.</p>
+								<p>Para ver la información de sus órdenes desde la página debe hacer click al botón con su nombre en la esquina superior derecha y luego en “Mis Órdenes”.</p>
+								<div class="image-help">
+									<img src="img/my-orders.png" alt="">
+								</div>
+								<p>Aparecerá una página con las órdenes realizadas y el estado en que se encuentran. Las órdenes cuentan con 5 estados:</p>
+								<ul>
+									<li><b>Pago Pendiente:</b> Cuando se generó la orden pero no se ha confirmado la transferencia bancaria.</li>
+									<li><b>Pendiente Comprobación:</b> Cuando el cliente agrega el número de transferencia pero el administrador no ha confirmado el pago.</li>
+									<li><b>Pendiente Entrega:</b> Cuando se confirmó el pago, pero no se ha entregado el producto.</li>
+									<li><b>Entregado:</b> Cuando se confirma la entrega del producto.</li>
+									<li><b>Orden cancelada:</b> Cuando el administrador decide cancelar la orden.</li>
+								</ul>
+								<p>Cuando se presiona el botón <img class="small-image" src="img/details.png" alt=""> se pueden observar los detalles de una orden.</p>
+								<p>Cuando se presiona el botón <img class="small-image" src="img/payment.png" alt=""> se confirma la transferencia por la compra.</p>
+								<p>Cuando se presiona el botón <img class="small-image" src="img/cancel.png" alt=""> la orden es cancelada. (Este botón solamente está disponible cuando el pago no ha sido confirmado).</p>
+								<h3>Contacto</h3>
+								<p>Si tiene alguna duda sobre el sistema o  sobre la mueblería, puede contactar al personal del taller escribiendo un mensaje en el siguiente cuadro contacto de la página principal.</p>
+								<div class="image-help">
+									<img src="img/contact.png" alt="">
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 text-center" style="margin-top:20px;">
+								<a class="btn btn-store" href="#" data-dismiss="modal">Regresar</a><br><br>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script type="text/javascript" src="config/config.js"></script>
 
 		<script type="text/javascript" src="plugins/jquery/jquery-2.2.4.min.js"></script>
@@ -195,5 +256,17 @@
 		<script type="text/javascript" src="js/controllers/order.js"></script>
         <!-- Services -->
 		<script type="text/javascript" src="js/services/queryService.js"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(window).keydown(function(e){
+					var keyCode = e.keyCode || e.which;
+					if(keyCode === 112) {
+						e.preventDefault();
+						$('.help-modal').modal();
+					}
+				});
+			});
+		</script>
 	</body>
 </html>
